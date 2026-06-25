@@ -3673,15 +3673,18 @@ function isAudioBackupPayload(parsed) {
         renderApp();
       });
 
-      // Eventos globais da discagem
-      document.body.addEventListener('click', e => {
-        const queueBtn = e.target.closest('[data-queue-lead]');
-        if (queueBtn) {
-          state.selectedDialerLeadId = queueBtn.dataset.queueLead;
-          renderDialer();
-          setTimeout(scrollDialerToTop, 50);
-        }
-      });
+      // Evento global da discagem. Mantido com bind unico para evitar acúmulo em re-renders.
+      if (!state._dialerQueueBodyClickBound) {
+        state._dialerQueueBodyClickBound = true;
+        document.body.addEventListener('click', e => {
+          const queueBtn = e.target.closest('[data-queue-lead]');
+          if (queueBtn) {
+            state.selectedDialerLeadId = queueBtn.dataset.queueLead;
+            renderDialer();
+            setTimeout(scrollDialerToTop, 50);
+          }
+        });
+      }
 
       document.getElementById('dialerResultFilter')?.addEventListener('change', e => {
         state.dialerResultFilter = e.target.value;
@@ -9987,24 +9990,40 @@ Você manteve a calma...
       if (!root) return;
 
       root.querySelectorAll('audio[data-audio-lead]').forEach(audioEl => {
-        const audio = getLeadAudio(audioEl.dataset.audioLead);
-        if (!isValidAudioDataUrl(audio)) {
-          audioEl.removeAttribute('src');
-          audioEl.insertAdjacentHTML('afterend', `<div class="audio-error-note">Áudio salvo sem dados válidos. Reanexe o MP3 e salve novamente.</div>`);
-          return;
-        }
+        audioEl.preload = 'none';
 
-        if (audioEl.dataset.loadedAudio === audio.uploaded_at) return;
-        audioEl.src = audio.data_url;
-        audioEl.dataset.loadedAudio = audio.uploaded_at || 'loaded';
-        audioEl.load();
-
-        audioEl.addEventListener('error', () => {
+        const showAudioError = message => {
           const exists = audioEl.parentElement?.querySelector('.audio-error-note');
           if (!exists) {
-            audioEl.insertAdjacentHTML('afterend', `<div class="audio-error-note">Não consegui reproduzir esse áudio no navegador. Tente clicar em “Abrir áudio” ou reanexar o arquivo em MP3.</div>`);
+            audioEl.insertAdjacentHTML('afterend', `<div class="audio-error-note">${escapeHtml(message)}</div>`);
           }
-        }, { once: true });
+        };
+
+        const loadAudioOnDemand = () => {
+          const audio = getLeadAudio(audioEl.dataset.audioLead);
+          if (!isValidAudioDataUrl(audio)) {
+            audioEl.removeAttribute('src');
+            showAudioError('Áudio salvo sem dados válidos. Reanexe o MP3 e salve novamente.');
+            return;
+          }
+
+          if (audioEl.dataset.loadedAudio === (audio.uploaded_at || 'loaded')) return;
+          audioEl.src = audio.data_url;
+          audioEl.dataset.loadedAudio = audio.uploaded_at || 'loaded';
+          audioEl.load();
+        };
+
+        if (audioEl.dataset.lazyAudioBound !== 'true') {
+          audioEl.dataset.lazyAudioBound = 'true';
+          audioEl.addEventListener('pointerdown', loadAudioOnDemand, { once: true });
+          audioEl.addEventListener('focus', loadAudioOnDemand, { once: true });
+          audioEl.addEventListener('play', loadAudioOnDemand, { once: true });
+          audioEl.addEventListener('error', () => {
+            showAudioError('Não consegui reproduzir esse áudio no navegador. Tente clicar em Abrir áudio ou reanexar o arquivo em MP3.');
+          }, { once: true });
+        }
+
+        if (audioEl.hasAttribute('autoplay')) loadAudioOnDemand();
       });
 
       root.querySelectorAll('[data-open-audio-lead]').forEach(btn => {
@@ -14764,7 +14783,10 @@ Chamam mais pelo WhatsApp, principalmente no horário de almoço."></textarea></
     };
     document.getElementById('dialerFocusBtn')?.addEventListener('click', toggleFocusMode);
     document.getElementById('dialerFocusBtnTop')?.addEventListener('click', toggleFocusMode);
-    document.addEventListener('keydown', handleFocusEscape, { once: true });
+    if (!state._dialerFocusEscapeBound) {
+      state._dialerFocusEscapeBound = true;
+      document.addEventListener('keydown', handleFocusEscape);
+    }
 
     document.querySelectorAll('[data-queue-lead]').forEach(btn => btn.addEventListener('click', () => { state.selectedDialerLeadId = btn.dataset.queueLead; renderDialer(); scrollToDialerLeadTop(); }));
     document.getElementById('runDialerSelfTest')?.addEventListener('click', runSelfTest);
@@ -17021,7 +17043,7 @@ function renderGoals() {
           total: items.length
         };
       }
-      function refreshSidebarNotifications() {
+      function refreshSidebarNotifications(force = false) {
         const card = document.getElementById('bfNotificationCard') || document.getElementById('bfNotificationBell');
         const badge = document.getElementById('bfNotificationBadge');
         const icon = document.getElementById('bfNotificationIcon');
@@ -17029,7 +17051,12 @@ function renderGoals() {
         const snippet = document.getElementById('bfNotificationSnippet');
         const tone = document.getElementById('bfNotificationTone');
         if (!card || !badge) return;
-        const items = buildBuyFlowNotifications();
+        const cache = window.__buyflowNotificationCache;
+        const nowMs = Date.now();
+        const items = !force && cache && (nowMs - cache.at) < 5000
+          ? cache.items
+          : buildBuyFlowNotifications();
+        window.__buyflowNotificationCache = { at: nowMs, items };
         const s = notificationSummary(items);
         const first = items[0] || null;
         card.classList.toggle('has-danger', s.danger > 0);
@@ -17185,7 +17212,7 @@ function renderGoals() {
       if (originalSaveDb && !saveDb.__bfNotifyWrapped) {
         saveDb = function saveDbWithNotificationRefresh(){
           const result = originalSaveDb.apply(this, arguments);
-          setTimeout(refreshSidebarNotifications, 0);
+          setTimeout(() => refreshSidebarNotifications(true), 0);
           return result;
         };
         saveDb.__bfNotifyWrapped = true;
@@ -20693,6 +20720,96 @@ function renderGoals() {
       }, true);
 
       console.info(`${PATCH_NAME} carregado.`);
+    })();
+
+    /* BUYFLOW PERFORMANCE PATCH - evita trabalho duplicado em troca de telas */
+    (function installBuyflowPerformancePatch(){
+      if (window.__buyflowPerformancePatchV1) return;
+      window.__buyflowPerformancePatchV1 = true;
+
+      function contentRoot() {
+        return document.getElementById('content');
+      }
+
+      function bumpContentVersion() {
+        const content = contentRoot();
+        if (!content) return '0';
+        const next = Number(content.dataset.bfRenderVersion || 0) + 1;
+        content.dataset.bfRenderVersion = String(next);
+        return String(next);
+      }
+
+      function rootVersion(root) {
+        if (!root || root === document) return contentRoot()?.dataset.bfRenderVersion || '';
+        if (root.id === 'content') return root.dataset?.bfRenderVersion || '';
+        return root.dataset?.bfRenderVersion || '';
+      }
+
+      function wrapPageRenderer(name) {
+        const fn = window[name] || globalThis[name];
+        if (typeof fn !== 'function' || fn.__bfPerfWrapped) return;
+        const wrapped = function buyflowPerfPageRendererWrapper() {
+          bumpContentVersion();
+          return fn.apply(this, arguments);
+        };
+        wrapped.__bfPerfWrapped = true;
+        try { window[name] = wrapped; } catch (_) {}
+        try { globalThis[name] = wrapped; } catch (_) {}
+        try { eval(`${name} = wrapped`); } catch (_) {}
+      }
+
+      [
+        'renderDashboard',
+        'renderLeads',
+        'renderDialer',
+        'renderFollowups',
+        'renderContacts',
+        'renderMeetings',
+        'renderCampaigns',
+        'renderCampaignDetail',
+        'renderAnalysis',
+        'renderGoals',
+        'renderUsers',
+        'renderPipeline'
+      ].forEach(wrapPageRenderer);
+
+      if (typeof enhanceSortableTables === 'function' && !enhanceSortableTables.__bfPerfWrapped) {
+        const originalEnhanceSortableTables = enhanceSortableTables;
+        enhanceSortableTables = function enhanceSortableTablesOncePerRender(root = document) {
+          const version = rootVersion(root);
+          if (version && root?.__bfLastEnhancedVersion === version) return;
+          const result = originalEnhanceSortableTables.call(this, root);
+          if (version && root) root.__bfLastEnhancedVersion = version;
+          return result;
+        };
+        enhanceSortableTables.__bfPerfWrapped = true;
+      }
+
+      if (typeof materializeAudioPlayers === 'function' && !materializeAudioPlayers.__bfPerfWrapped) {
+        const originalMaterializeAudioPlayers = materializeAudioPlayers;
+        materializeAudioPlayers = function materializeAudioPlayersOncePerRender(root = document) {
+          const version = rootVersion(root);
+          if (version && root?.__bfLastAudioMaterializedVersion === version) return;
+          const result = originalMaterializeAudioPlayers.call(this, root);
+          if (version && root) root.__bfLastAudioMaterializedVersion = version;
+          return result;
+        };
+        materializeAudioPlayers.__bfPerfWrapped = true;
+      }
+
+      const originalSaveDbPerf = typeof saveDb === 'function' ? saveDb : null;
+      if (originalSaveDbPerf && !saveDb.__bfPerfWrapped) {
+        saveDb = function saveDbWithPerfTiming() {
+          const start = performance.now();
+          const result = originalSaveDbPerf.apply(this, arguments);
+          const elapsed = performance.now() - start;
+          if (elapsed > 120) {
+            console.warn(`BuyFlow CRM: salvamento local demorou ${Math.round(elapsed)}ms. Considere remover audios antigos se a base estiver grande.`);
+          }
+          return result;
+        };
+        saveDb.__bfPerfWrapped = true;
+      }
     })();
 
 
