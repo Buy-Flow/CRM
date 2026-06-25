@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BuyFlow CRM 2.0 | Prospecção Ativa</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div id="loginView" class="login-shell">
+    <form id="loginForm" class="login-card">
+      <div class="login-brand">
+        <div class="brand-mark">BF</div>
+        <div>
+          <h1 style="margin:0;letter-spacing:-.04em;">BuyFlow CRM 2.0</h1>
+          <p style="margin:4px 0 0;color:#64748B;">Prospecção ativa por telefone</p>
+        </div>
+      </div>
+      <div class="grid" style="gap:14px;">
+        <div class="field">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" name="email" class="input" type="email" value="admin@buyflow.com" placeholder="nome@empresa.com" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="loginPassword">Senha</label>
+          <input id="loginPassword" name="password" class="input" type="password" value="123456" placeholder="Sua senha de acesso" autocomplete="current-password" required />
+        </div>
+        <button class="btn" type="submit">Entrar no CRM</button>
+        <div id="loginErrorMessage" style="color:var(--danger); font-size:13px; min-height:1.5em; text-align:center;"></div>
+        <p style="margin:0;color:#64748B;font-size:13px;line-height:1.45; text-align:center;">Acesso já preenchido. É só clicar em <strong>Entrar no CRM</strong>.</p>
+      </div>
+    </form>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">BF</div>
+        <div>
+          <strong>BuyFlow CRM</strong>
+          <small>Telefone • B2C local</small>
+        </div>
+      </div>
+      <nav class="nav" id="nav"></nav>
+      <div class="sidebar-footer">
+        <button id="bfNotificationCard" type="button" class="bf-sidebar-notification-card" aria-label="Abrir central de notificações">
+          <span id="bfNotificationIcon" class="bf-sidebar-notification-icon">🔔</span>
+          <span class="bf-sidebar-notification-copy">
+            <strong id="bfNotificationTitle">Notificações</strong>
+            <small id="bfNotificationSnippet">Nada urgente agora.</small>
+          </span>
+          <span id="bfNotificationTone" class="bf-sidebar-notification-tone hidden">OK</span>
+          <span id="bfNotificationBadge" class="profile-footer-alert-badge hidden">0</span>
+        </button>
+        <button id="profileSettingsBtn" type="button" class="sidebar-user-card profile-footer" aria-label="Abrir Perfil e Configurações" style="width: 100%; text-align: left; background: var(--sidebar-soft); border: 1px solid rgba(255,255,255,.08); padding: 14px; border-radius: 18px; display: flex; align-items: center; gap: 12px; color: #E2E8F0; transition: all 0.2s;">
+          <span id="sidebarProfileAvatar" class="profile-footer-avatar" style="width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: grid; place-items: center; font-weight: 700; color: white;">BF</span>
+          <span class="profile-footer-main" style="flex: 1; min-width: 0;">
+            <strong id="sidebarUserName" style="display:block;color:white;font-size: 13px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">—</strong>
+            <small id="sidebarUserRole" style="color:#94A3B8;display:block;margin-top:2px;font-size: 11px;">BuyFlow CRM</small>
+          </span>
+          <span class="profile-footer-gear" aria-hidden="true">⚙️</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+          <button id="mobileMenuBtn" class="mobile-menu">☰</button>
+          <div class="page-title">
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageSubtitle">Visão geral da operação comercial</p>
+          </div>
+        </div>
+        <div class="top-actions" id="pageActions"></div>
+      </header>
+      <section id="content" class="content"></section>
+    </main>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toastWrap" class="toast-wrap"></div>
+  <div id="loading" class="loading hidden"><div><div class="spinner"></div><div>Processando...</div></div></div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
