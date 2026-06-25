@@ -5388,7 +5388,7 @@
 
 
     /* =========================================================
-       BUYFLOW CRM — MODAL SYSTEM V4
+       BUYFLOW CRM - MODAL SYSTEM V4
        Padrão global: pop-ups profissionais com scroll interno real
        ========================================================= */
     html.modal-lock,
@@ -5822,7 +5822,7 @@
   
 
     /* =========================================================
-       FIX ESPECÍFICO — MODAL NOVA META
+       FIX ESPECÍFICO - MODAL NOVA META
        Corrige scroll interno, toque no celular e rodapé acessível.
        ========================================================= */
     body.modal-open {
@@ -8978,7 +8978,7 @@
 
 
     /* =========================================================
-       Central de Campanhas — redesenho visual isolado
+       Central de Campanhas - redesenho visual isolado
        ========================================================= */
     .campaigns-page {
       display: grid;
@@ -9629,7 +9629,7 @@
 
 
 /* =========================================================
-   DISCAGEM INTEGRADA — CSS da versão aprovada pelo usuário
+   DISCAGEM INTEGRADA - CSS da versão aprovada pelo usuário
    Fonte: CRM-BuyFlow-discagem-perguntas-respostas-apos-aprendizado.html
    ========================================================= */
 
@@ -11277,7 +11277,7 @@
     }
 
 
-    /* Perguntas e respostas feitas na ligação — mesmo modelo de Score de qualidade / Aprendizado prático */
+    /* Perguntas e respostas feitas na ligação - mesmo modelo de Score de qualidade / Aprendizado prático */
     .qa-evaluation-card .auto-eval-hero {
       grid-template-columns: minmax(0, 1fr) 150px;
     }
@@ -15129,7 +15129,7 @@
 
 
     /* =========================================================
-       BUYFLOW CRM — MODAL SYSTEM V4
+       BUYFLOW CRM - MODAL SYSTEM V4
        Padrão global: pop-ups profissionais com scroll interno real
        ========================================================= */
     html.modal-lock,
@@ -15563,7 +15563,7 @@
   
 
     /* =========================================================
-       FIX ESPECÍFICO — MODAL NOVA META
+       FIX ESPECÍFICO - MODAL NOVA META
        Corrige scroll interno, toque no celular e rodapé acessível.
        ========================================================= */
     body.modal-open {
@@ -18719,7 +18719,7 @@
 
 
     /* =========================================================
-       Central de Campanhas — redesenho visual isolado
+       Central de Campanhas - redesenho visual isolado
        ========================================================= */
     .campaigns-page {
       display: grid;
@@ -19369,7 +19369,7 @@
 
 
     /* =========================================================
-       BuyFlow Discagem — Polimento visual + Modo Foco
+       BuyFlow Discagem - Polimento visual + Modo Foco
        Mantém o motor atual e melhora apenas a apresentação.
        ========================================================= */
     :root {
@@ -20403,7 +20403,7 @@
     }
 
 
-    /* Avaliação V8 — avaliação por IA + ação fixa */
+    /* Avaliação V8 - avaliação por IA + ação fixa */
     .auto-evaluation-card {
       position: relative;
       overflow: hidden;
@@ -20462,7 +20462,7 @@
 
   
 
-    /* V7 — refinamento visual do Registrar Resultado + notificações compactas */
+    /* V7 - refinamento visual do Registrar Resultado + notificações compactas */
     .toast-wrap,
     body.dark .toast-wrap {
       position: fixed !important;
@@ -20763,7 +20763,7 @@
     }
 
 
-    /* V8 — barra de ação fixa e avaliação rápida */
+    /* V8 - barra de ação fixa e avaliação rápida */
     body { padding-bottom: 118px; }
     .content { padding-bottom: 128px !important; }
 
@@ -21368,7 +21368,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
 
-    /* Análise V3 — central inteligente da Discagem */
+    /* Análise V3 - central inteligente da Discagem */
     .analysis-v3-shell { gap: 18px; }
     .analysis-v3-hero {
       border-radius: 30px;
@@ -21545,7 +21545,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
 /* =========================================================
-   BUYFLOW — Análise e Metas v4: design mais separado e funcional
+   BUYFLOW - Análise e Metas v4: design mais separado e funcional
    ========================================================= */
 .analysis-pro-shell,
 .goals-pro-shell {
@@ -22106,7 +22106,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
     /* =========================================================
-       BUYFLOW CRM — REFINAMENTO PREMIUM GLOBAL V1
+       BUYFLOW CRM - REFINAMENTO PREMIUM GLOBAL V1
        Aplica o mesmo padrão visual de Discagem, Análise e Metas
        nas páginas restantes: Dashboard, Leads, Pipeline, Contatos,
        Follow-ups, Reuniões, Campanhas, Detalhes e Usuários.
@@ -22709,7 +22709,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
     /* =========================================================
-       FIX FINAL — remover espaço branco embaixo das páginas
+       FIX FINAL - remover espaço branco embaixo das páginas
        Motivo: o padding-bottom global foi criado para a barra fixa da Discagem,
        mas estava afetando Campanhas/Pipeline e deixando sobra branca no final.
        ========================================================= */
@@ -22756,7 +22756,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
     /* =========================================================
-       FIX DEFINITIVO — remover sobra branca no fim da Discagem
+       FIX DEFINITIVO - remover sobra branca no fim da Discagem
        A barra fixa não deve criar rolagem extra gigante.
        Mantém apenas o respiro mínimo para não cobrir o botão final.
        ========================================================= */
@@ -23212,7 +23212,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
     /* =========================================================
-       AJUSTE FINAL — remover título/subtítulo superior das páginas
+       AJUSTE FINAL - remover título/subtítulo superior das páginas
        e refinar o tema escuro do CRM inteiro
        ========================================================= */
 
@@ -23265,7 +23265,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
       }
     }
 
-    /* Tema escuro premium — mais contraste, menos cinza lavado e cards mais elegantes */
+    /* Tema escuro premium - mais contraste, menos cinza lavado e cards mais elegantes */
     body.dark {
       color-scheme: dark;
       --bg: #050914;
@@ -23766,7 +23766,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
     /* =========================================================
-       AJUSTE FINAL V2 — remove a faixa branca vazia do topo
+       AJUSTE FINAL V2 - remove a faixa branca vazia do topo
        e padroniza filtros no modelo premium da Discagem
        ========================================================= */
     @media (min-width: 1025px) {
@@ -24038,7 +24038,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
 
-    /* Notificação operacional acima do perfil — card pequeno, útil e clicável */
+    /* Notificação operacional acima do perfil - card pequeno, útil e clicável */
     .sidebar-footer {
       gap: 10px !important;
     }
@@ -24257,7 +24257,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
     /* =========================================================
-       FILTROS FINAIS PREMIUM — padrão único do site inteiro
+       FILTROS FINAIS PREMIUM - padrão único do site inteiro
        Objetivo: blocos compactos, bonitos, organizados e com pouco espaço.
        Aplica em: Leads, Discagem, Follow-ups, Contatos, Reuniões,
        Campanhas, Pipeline, Análise e Metas.
@@ -24839,7 +24839,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
     /* =========================================================
-       PADRÃO FINAL DOS POP-UPS — BuyFlow CRM
+       PADRÃO FINAL DOS POP-UPS - BuyFlow CRM
        Analisado e aplicado para: confirmação, lead, detalhes, CSV,
        backup, reuniões, follow-ups, campanha, pipeline, metas, usuários,
        configurações e diagnóstico da discagem.
@@ -25113,7 +25113,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
 
 
 
-    /* Tema cinza escuro — quase preto, confortável para os olhos */
+    /* Tema cinza escuro - quase preto, confortável para os olhos */
     body.gray {
       --bg: #e8edf4;
       --card: #f6f8fb;
@@ -25229,7 +25229,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
     /* =========================================================
-       AJUSTE FINAL — TEMA CINZA ESCURO + FILTROS MODELO PREMIUM
+       AJUSTE FINAL - TEMA CINZA ESCURO + FILTROS MODELO PREMIUM
        Base visual inspirada no modelo enviado pelo Guilherme.
        ========================================================= */
 
@@ -26136,7 +26136,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
     /* =========================================================
-       FILTROS VERSÃO FINAL — só o filtro, sem título em cima
+       FILTROS VERSÃO FINAL - só o filtro, sem título em cima
        Base visual inspirada no modelo enviado pelo Guilherme.
        ========================================================= */
 
@@ -26649,7 +26649,7 @@ body[data-crm-page="dialer"] .main { min-height: 100vh; }
   
 
 /* =========================================================
-   CORREÇÃO FINAL — FILTROS NO MODELO ENVIADO PELO GUILHERME
+   CORREÇÃO FINAL - FILTROS NO MODELO ENVIADO PELO GUILHERME
    Objetivo: parar de inventar outro layout e seguir o card compacto:
    caixa limpa + header pequeno + campos alinhados + botões pequenos.
    ========================================================= */
@@ -27215,7 +27215,7 @@ body.dark .goals-pro-panel:has(.goals-pro-filter-grid) {
 
 
 /* =========================================================
-   BUYFLOW CRM — FILTROS EXATOS NO MODELO SOLICITADO
+   BUYFLOW CRM - FILTROS EXATOS NO MODELO SOLICITADO
    ========================================================= */
 .bf-smart-filter {
   width: 100%;
@@ -27426,7 +27426,7 @@ body.gray .bf-filter-date input {
 
   
     /* =========================================================
-       CORREÇÃO DEFINITIVA — BOTÕES DOS FILTROS SEM ESPAÇO VAZIO
+       CORREÇÃO DEFINITIVA - BOTÕES DOS FILTROS SEM ESPAÇO VAZIO
        Regra:
        - Botões de ação ficam agrupados.
        - Botão Limpar / Limpar filtros fica sempre à direita do grupo.
@@ -27578,7 +27578,7 @@ body.gray .bf-filter-date input {
 
   
     /* =========================================================
-       AJUSTE DISCAGEM — FILA COM FILTROS LADO A LADO
+       AJUSTE DISCAGEM - FILA COM FILTROS LADO A LADO
        E MODO FOCO SEM FILTRO SUPERIOR
        ========================================================= */
 
@@ -27717,7 +27717,7 @@ body.gray .bf-filter-date input {
 
   
     /* =========================================================
-       AJUSTE FILA — SEM CABEÇALHO E CHIPS COM NOMES LEGÍVEIS
+       AJUSTE FILA - SEM CABEÇALHO E CHIPS COM NOMES LEGÍVEIS
        ========================================================= */
     [data-bf-page-filter="dialer-queue"] .bf-smart-filter-head {
       display: none !important;

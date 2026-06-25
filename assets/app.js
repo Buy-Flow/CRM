@@ -246,7 +246,7 @@
     }
 
     function brDate(iso) {
-      if (!iso) return '—';
+      if (!iso) return '-';
       const dateOnly = followupDateOnly(iso) || String(iso || '').split('T')[0];
       const [y, m, d] = String(dateOnly || '').split('-');
       if (!y || !m || !d) return iso;
@@ -254,7 +254,7 @@
     }
 
     function brDateTime(value) {
-      if (!value) return '—';
+      if (!value) return '-';
       const d = parseFollowupDateTime(value) || new Date(value);
       if (Number.isNaN(d.getTime())) return brDate(value);
       return d.toLocaleString('pt-BR', {
@@ -394,9 +394,9 @@
     }
 
     function formatFollowupDateTime(value) {
-      if (!value) return '—';
+      if (!value) return '-';
       const date = parseFollowupDateTime(value);
-      if (!date) return '—';
+      if (!date) return '-';
       const now = new Date();
       const tomorrow = new Date(now);
       tomorrow.setDate(now.getDate() + 1);
@@ -677,7 +677,7 @@
     }
 
     function getUser(id) {
-      return db.users.find(u => u.id === id) || { name: '—', role: '—' };
+      return db.users.find(u => u.id === id) || { name: '-', role: '-' };
     }
 
     function logActivity(text) {
@@ -868,7 +868,7 @@
               <div class="backup-center-card">
                 <div class="backup-center-card-top">
                   <div class="backup-center-icon">♻️</div>
-                  <div><h4>Backup restaurável JSON sem áudio</h4><p>Arquivo técnico completo com leads, campanhas, ligações, follow-ups, reuniões, usuários, metas e análises — sem MP3/base64.</p></div>
+                  <div><h4>Backup restaurável JSON sem áudio</h4><p>Arquivo técnico completo com leads, campanhas, ligações, follow-ups, reuniões, usuários, metas e análises - sem MP3/base64.</p></div>
                 </div>
                 <button id="exportRestorableBackupBtn" class="btn success" type="button">Baixar backup JSON</button>
               </div>
@@ -1250,14 +1250,14 @@
         const calls = (db.callLogs || []).filter(call => call.lead_id === lead.id);
         const lastCall = calls[0] || null;
         return [
-          `#${index + 1} — ${lead.name || 'Lead sem nome'}`,
-          `Telefone: ${lead.phone || '—'}`,
-          `WhatsApp: ${lead.whatsapp || '—'}`,
-          `Campanha: ${getCampaign(lead.campaign_id).name || '—'}`,
-          `Data da ligação/último contato: ${lastCall?.date || lead.last_contact || '—'}`,
-          `Status da ligação: ${lastCall?.result || lead.last_result || '—'}`,
-          `Responsável: ${getUser(lastCall?.user_id || lead.owner_id).name || '—'}`,
-          `Observações: ${lead.last_comments || lastCall?.comments || '—'}`,
+          `#${index + 1} - ${lead.name || 'Lead sem nome'}`,
+          `Telefone: ${lead.phone || '-'}`,
+          `WhatsApp: ${lead.whatsapp || '-'}`,
+          `Campanha: ${getCampaign(lead.campaign_id).name || '-'}`,
+          `Data da ligação/último contato: ${lastCall?.date || lead.last_contact || '-'}`,
+          `Status da ligação: ${lastCall?.result || lead.last_result || '-'}`,
+          `Responsável: ${getUser(lastCall?.user_id || lead.owner_id).name || '-'}`,
+          `Observações: ${lead.last_comments || lastCall?.comments || '-'}`,
           '',
           'TRANSCRIÇÃO:',
           transcript,
@@ -2977,7 +2977,7 @@ function isAudioBackupPayload(parsed) {
 
     function yesNoCompact(value) {
       const text = String(value || '').trim();
-      if (!text) return '—';
+      if (!text) return '-';
       if (/^(sim|yes|true|1)$/i.test(text)) return 'Sim';
       if (/^(não|nao|no|false|0)$/i.test(text)) return 'Não';
       return text;
@@ -3007,7 +3007,7 @@ function isAudioBackupPayload(parsed) {
         </thead>
         <tbody>${leads.map(l => {
           const location = [l.city, l.state].filter(Boolean).join(' / ');
-          const source = l.lead_source || '—';
+          const source = l.lead_source || '-';
           const imported = l.imported_at || l.created_at || '';
           const moved = l.moved_at || '';
           return `
@@ -3023,14 +3023,14 @@ function isAudioBackupPayload(parsed) {
             <td>
               <div class="lead-mini-stack">
                 ${campaignBadge(l.campaign_id)}
-                <span>Origem: <b>${escapeHtml(getCampaign(l.last_origin_campaign || l.campaign_id).name || '—')}</b></span>
+                <span>Origem: <b>${escapeHtml(getCampaign(l.last_origin_campaign || l.campaign_id).name || '-')}</b></span>
               </div>
             </td>
 
             <td>
               <div class="lead-mini-stack">
-                <span>Tel: <b>${escapeHtml(l.phone || '—')}</b></span>
-                <span>WA: <b>${escapeHtml(l.whatsapp || '—')}</b></span>
+                <span>Tel: <b>${escapeHtml(l.phone || '-')}</b></span>
+                <span>WA: <b>${escapeHtml(l.whatsapp || '-')}</b></span>
               </div>
             </td>
 
@@ -3038,15 +3038,15 @@ function isAudioBackupPayload(parsed) {
 
             <td>
               <div class="lead-mini-stack">
-                <span>Cidade: <b>${escapeHtml(l.city || '—')}</b></span>
-                <span>UF: <b>${escapeHtml(l.state || '—')}</b></span>
+                <span>Cidade: <b>${escapeHtml(l.city || '-')}</b></span>
+                <span>UF: <b>${escapeHtml(l.state || '-')}</b></span>
               </div>
             </td>
 
             <td>
               <div class="lead-mini-stack">
-                <span>Nota: <b>${escapeHtml(l.rating || '—')}</b></span>
-                <span>Aval.: <b>${escapeHtml(l.review_count || '—')}</b></span>
+                <span>Nota: <b>${escapeHtml(l.rating || '-')}</b></span>
+                <span>Aval.: <b>${escapeHtml(l.review_count || '-')}</b></span>
                 <span>Site: <b>${escapeHtml(yesNoCompact(l.has_site || (getWebsiteUrl(l) ? 'Sim' : '')))}</b></span>
                 <span>Perfil: <b>${escapeHtml(yesNoCompact(l.claimed_profile))}</b></span>
               </div>
@@ -3056,7 +3056,7 @@ function isAudioBackupPayload(parsed) {
               <div class="lead-mini-stack">
                 <span>Meta: <b>${escapeHtml(yesNoCompact(l.meta_ads))}</b></span>
                 <span>Google: <b>${escapeHtml(yesNoCompact(l.google_ads))}</b></span>
-                <span>ICP: <b>${escapeHtml(l.icp || '—')}</b></span>
+                <span>ICP: <b>${escapeHtml(l.icp || '-')}</b></span>
               </div>
             </td>
 
@@ -3069,15 +3069,15 @@ function isAudioBackupPayload(parsed) {
 
             <td>
               <div class="lead-mini-stack">
-                <span>At.: <b>${escapeHtml(l.attendant_name || '—')}</b></span>
-                <span>Dono: <b>${escapeHtml(l.owner_name || '—')}</b></span>
-                <span>Dec.: <b>${escapeHtml(l.decision_maker || '—')}</b></span>
+                <span>At.: <b>${escapeHtml(l.attendant_name || '-')}</b></span>
+                <span>Dono: <b>${escapeHtml(l.owner_name || '-')}</b></span>
+                <span>Dec.: <b>${escapeHtml(l.decision_maker || '-')}</b></span>
               </div>
             </td>
 
             <td>
               <div class="lead-mini-stack">
-                <span>Res.: <b>${escapeHtml(l.last_result || '—')}</b></span>
+                <span>Res.: <b>${escapeHtml(l.last_result || '-')}</b></span>
                 <span>Últ.: <b>${brDate(l.last_contact)}</b></span>
                 <span>Próx.: <b>${formatFollowupDateTime(l.next_followup)}</b></span>
                 <div class="lead-comment-compact" title="${escapeAttr(l.last_comments || '')}">${escapeHtml(l.last_comments || 'Sem comentário')}</div>
@@ -3093,13 +3093,13 @@ function isAudioBackupPayload(parsed) {
 
             <td>
               <div class="lead-mini-stack" style="font-size: 11px;">
-                <span>Seg: <b>${escapeHtml(l.hours_monday || '—')}</b></span>
-                <span>Ter: <b>${escapeHtml(l.hours_tuesday || '—')}</b></span>
-                <span>Qua: <b>${escapeHtml(l.hours_wednesday || '—')}</b></span>
-                <span>Qui: <b>${escapeHtml(l.hours_thursday || '—')}</b></span>
-                <span>Sex: <b>${escapeHtml(l.hours_friday || '—')}</b></span>
-                <span>Sáb: <b>${escapeHtml(l.hours_saturday || '—')}</b></span>
-                <span>Dom: <b>${escapeHtml(l.hours_sunday || '—')}</b></span>
+                <span>Seg: <b>${escapeHtml(l.hours_monday || '-')}</b></span>
+                <span>Ter: <b>${escapeHtml(l.hours_tuesday || '-')}</b></span>
+                <span>Qua: <b>${escapeHtml(l.hours_wednesday || '-')}</b></span>
+                <span>Qui: <b>${escapeHtml(l.hours_thursday || '-')}</b></span>
+                <span>Sex: <b>${escapeHtml(l.hours_friday || '-')}</b></span>
+                <span>Sáb: <b>${escapeHtml(l.hours_saturday || '-')}</b></span>
+                <span>Dom: <b>${escapeHtml(l.hours_sunday || '-')}</b></span>
               </div>
             </td>
 
@@ -3107,7 +3107,7 @@ function isAudioBackupPayload(parsed) {
               <div class="lead-mini-stack">
                 <span>Envio: <b>${brDateTime(imported)}</b></span>
                 <span>Criação: <b>${brDateTime(l.created_at)}</b></span>
-                <span>Mov.: <b>${moved ? brDateTime(moved) : '—'}</b></span>
+                <span>Mov.: <b>${moved ? brDateTime(moved) : '-'}</b></span>
               </div>
             </td>
 
@@ -3259,11 +3259,11 @@ function isAudioBackupPayload(parsed) {
               <div class="detail-grid">
                 <div class="detail-card">
                   <small>Telefone</small>
-                  <strong>${escapeHtml(lead?.phone || '—')}</strong>
+                  <strong>${escapeHtml(lead?.phone || '-')}</strong>
                 </div>
                 <div class="detail-card">
                   <small>WhatsApp</small>
-                  <strong>${escapeHtml(lead?.whatsapp || '—')}</strong>
+                  <strong>${escapeHtml(lead?.whatsapp || '-')}</strong>
                 </div>
                 <div class="detail-card">
                   <small>Valor estimado</small>
@@ -3375,8 +3375,8 @@ function isAudioBackupPayload(parsed) {
                 <div class="detail-section-body">
                   <div class="grid grid-3">
                     <div class="stat-mini"><strong>${brDateTime(lead.imported_at || lead.created_at)}</strong><span>Data/hora de envio</span></div>
-                    <div class="stat-mini"><strong>${escapeHtml(lastOrigin.name || '—')}</strong><span>Última campanha de origem</span></div>
-                    <div class="stat-mini"><strong>${lead.moved_at ? brDateTime(lead.moved_at) : '—'}</strong><span>Última movimentação</span></div>
+                    <div class="stat-mini"><strong>${escapeHtml(lastOrigin.name || '-')}</strong><span>Última campanha de origem</span></div>
+                    <div class="stat-mini"><strong>${lead.moved_at ? brDateTime(lead.moved_at) : '-'}</strong><span>Última movimentação</span></div>
                   </div>
                 </div>
               </div>` : ''}
@@ -3974,7 +3974,7 @@ function isAudioBackupPayload(parsed) {
           <div>
             <div class="queue-card-name">${escapeHtml(lead.name)}</div>
             <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
-               <div class="queue-card-phone">${escapeHtml(formatPhoneForDisplay(lead.phone) || '—')}${lead.whatsapp && lead.whatsapp !== lead.phone ? ` • WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp))}` : ''}</div>
+               <div class="queue-card-phone">${escapeHtml(formatPhoneForDisplay(lead.phone) || '-')}${lead.whatsapp && lead.whatsapp !== lead.phone ? ` • WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp))}` : ''}</div>
                <span class="badge ${statusOpenClass}" style="font-size:10px; padding:2px 6px;">${statusOpenText}</span>
             </div>
           </div>
@@ -4206,7 +4206,7 @@ function isAudioBackupPayload(parsed) {
     }
 
     function isBusinessOpen(hoursStr) {
-      if (!hoursStr || hoursStr === '—') return { open: false, msg: 'Horário não informado' };
+      if (!hoursStr || hoursStr === '-') return { open: false, msg: 'Horário não informado' };
       
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -5040,15 +5040,15 @@ Você manteve a calma...
               <div class="detail-grid">
                 <div class="detail-card">
                   <small>Telefone</small>
-                  <strong>${escapeHtml(formatPhoneForDisplay(lead.phone) || '—')}</strong>
+                  <strong>${escapeHtml(formatPhoneForDisplay(lead.phone) || '-')}</strong>
                 </div>
                 <div class="detail-card">
                   <small>WhatsApp</small>
-                  <strong>${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '—')}</strong>
+                  <strong>${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '-')}</strong>
                 </div>
                 <div class="detail-card">
                   <small>Resultado atual</small>
-                  <strong>${escapeHtml(lead.last_result || '—')}</strong>
+                  <strong>${escapeHtml(lead.last_result || '-')}</strong>
                 </div>
                 <div class="detail-card">
                   <small>Próximo follow-up</small>
@@ -5391,11 +5391,11 @@ Você manteve a calma...
             <div class="detail-grid">
               <div class="detail-card">
                 <small>Telefone</small>
-                <strong>${escapeHtml(formatPhoneForDisplay(lead.phone) || '—')}</strong>
+                <strong>${escapeHtml(formatPhoneForDisplay(lead.phone) || '-')}</strong>
               </div>
               <div class="detail-card">
                 <small>WhatsApp</small>
-                <strong>${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '—')}</strong>
+                <strong>${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '-')}</strong>
               </div>
               <div class="detail-card">
                 <small>Valor estimado</small>
@@ -5432,11 +5432,11 @@ Você manteve a calma...
                   </div>
                   <div class="detail-info-item">
                     <span>Data informada</span>
-                    <strong>${escapeHtml(diagnostic.data || '—')}</strong>
+                    <strong>${escapeHtml(diagnostic.data || '-')}</strong>
                   </div>
                   <div class="detail-info-item">
                     <span>Período / horas</span>
-                    <strong>${escapeHtml(diagnostic.periodo || '—')} ${diagnostic.horas ? `• ${escapeHtml(diagnostic.horas)}` : ''}</strong>
+                    <strong>${escapeHtml(diagnostic.periodo || '-')} ${diagnostic.horas ? `• ${escapeHtml(diagnostic.horas)}` : ''}</strong>
                   </div>
                 </div>
               </div>
@@ -5508,23 +5508,23 @@ Você manteve a calma...
                 <div class="detail-info-list">
                   <div class="detail-info-item">
                     <span>Instagram</span>
-                    <strong>${getInstagramUrl(lead) ? `<a href="${escapeAttr(getInstagramUrl(lead))}" target="_blank" rel="noopener noreferrer" class="external-link" style="color:var(--primary);">Abrir Instagram</a>` : '—'}</strong>
+                    <strong>${getInstagramUrl(lead) ? `<a href="${escapeAttr(getInstagramUrl(lead))}" target="_blank" rel="noopener noreferrer" class="external-link" style="color:var(--primary);">Abrir Instagram</a>` : '-'}</strong>
                   </div>
                   <div class="detail-info-item">
                     <span>Site</span>
-                    <strong>${getWebsiteUrl(lead) ? `<a href="${escapeAttr(getWebsiteUrl(lead))}" target="_blank" rel="noopener noreferrer" class="external-link" style="color:var(--primary);">Abrir site</a>` : '—'}</strong>
+                    <strong>${getWebsiteUrl(lead) ? `<a href="${escapeAttr(getWebsiteUrl(lead))}" target="_blank" rel="noopener noreferrer" class="external-link" style="color:var(--primary);">Abrir site</a>` : '-'}</strong>
                   </div>
                   <div class="detail-info-item">
                     <span>Google Maps</span>
-                    <strong>${lead.google_maps ? `<a href="${escapeAttr(lead.google_maps)}" target="_blank" rel="noopener noreferrer" class="external-link" style="color:var(--primary);">Abrir no Maps</a>` : '—'}</strong>
+                    <strong>${lead.google_maps ? `<a href="${escapeAttr(lead.google_maps)}" target="_blank" rel="noopener noreferrer" class="external-link" style="color:var(--primary);">Abrir no Maps</a>` : '-'}</strong>
                   </div>
                   <div class="detail-info-item">
                     <span>Origem do lead</span>
-                    <strong>${escapeHtml(lead.lead_source || '—')}</strong>
+                    <strong>${escapeHtml(lead.lead_source || '-')}</strong>
                   </div>
                   <div class="detail-info-item">
                     <span>Campanha de origem</span>
-                    <strong>${escapeHtml(lastOrigin.name || '—')}</strong>
+                    <strong>${escapeHtml(lastOrigin.name || '-')}</strong>
                   </div>
                 </div>
               </div>
@@ -6104,11 +6104,11 @@ Você manteve a calma...
             <td><span class="follow-priority ${info.cls}">${info.icon} ${escapeHtml(info.label)}</span></td>
             <td>${formatFollowupDateTime(t.date)}</td>
             <td><strong>${escapeHtml(lead?.name || 'Lead removido')}</strong><br><small style="color:var(--muted);">${escapeHtml(lead?.owner_name || lead?.attendant_name || 'Sem decisor/atendente')}</small></td>
-            <td>${escapeHtml(lead?.phone || '—')}<br><small style="color:var(--muted);">WA: ${escapeHtml(lead?.whatsapp || '—')}</small></td>
+            <td>${escapeHtml(lead?.phone || '-')}<br><small style="color:var(--muted);">WA: ${escapeHtml(lead?.whatsapp || '-')}</small></td>
             <td>${campaignBadge(t.campaign_id)}</td>
             <td>${escapeHtml(getUser(t.owner_id).name)}</td>
             <td>${statusBadge(t.status)}</td>
-            <td>${escapeHtml(t.note || '—')}</td>
+            <td>${escapeHtml(t.note || '-')}</td>
             <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
               <button class="btn small" data-follow-dial="${t.id}">Discagem</button>
               <button class="btn small secondary" data-follow-reschedule="${t.id}">Reagendar</button>
@@ -6529,9 +6529,9 @@ Você manteve a calma...
 
             <div class="contact-compact-info">
               <span>Telefone</span>
-              <strong>${escapeHtml(formatPhoneForDisplay(lead.phone || lead.whatsapp) || '—')}</strong>
-              <span>Dono: <strong style="display:inline;color:var(--text);">${escapeHtml(lead.owner_name || '—')}</strong></span>
-              <span>Atendente: <strong style="display:inline;color:var(--text);">${escapeHtml(lead.attendant_name || '—')}</strong></span>
+              <strong>${escapeHtml(formatPhoneForDisplay(lead.phone || lead.whatsapp) || '-')}</strong>
+              <span>Dono: <strong style="display:inline;color:var(--text);">${escapeHtml(lead.owner_name || '-')}</strong></span>
+              <span>Atendente: <strong style="display:inline;color:var(--text);">${escapeHtml(lead.attendant_name || '-')}</strong></span>
             </div>
 
             <div class="contact-compact-analysis">
@@ -6555,7 +6555,7 @@ Você manteve a calma...
               <div class="compact-detail-grid">
                 <div class="compact-detail-box">
                   <strong>Resumo do contato</strong>
-                  <span><b>WhatsApp:</b> ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '—')}</span>
+                  <span><b>WhatsApp:</b> ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '-')}</span>
                   <span><b>Follow-up:</b> ${formatFollowupDateTime(lead.next_followup)} ${record.diagnostic.followup_text ? `• ${escapeHtml(record.diagnostic.followup_text)}` : ''}</span>
                   <span><b>Registros:</b> ${record.questions.length} pergunta${record.questions.length === 1 ? '' : 's'}, ${record.transcript ? 'com transcrição' : 'sem transcrição'}, ${record.audio ? 'com áudio' : 'sem áudio'}</span>
                   <span><b>Relato:</b> ${escapeHtml(lastNote)}</span>
@@ -6583,11 +6583,11 @@ Você manteve a calma...
             const lastDate = record.latestCall?.date || lead.last_contact || lead.created_at || '';
             return `<tr>
               <td>${brDate(lastDate)}</td>
-              <td><strong>${escapeHtml(lead.name)}</strong><br><small style="color:var(--muted);">${escapeHtml(lead.category || '—')}</small></td>
+              <td><strong>${escapeHtml(lead.name)}</strong><br><small style="color:var(--muted);">${escapeHtml(lead.category || '-')}</small></td>
               <td>${campaignBadge(lead.campaign_id)}</td>
-              <td>${escapeHtml(formatPhoneForDisplay(lead.phone) || '—')}<br><small style="color:var(--muted);">WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '—')}</small></td>
-              <td>${escapeHtml(lead.attendant_name || '—')}</td>
-              <td>${escapeHtml(lead.owner_name || '—')}</td>
+              <td>${escapeHtml(formatPhoneForDisplay(lead.phone) || '-')}<br><small style="color:var(--muted);">WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '-')}</small></td>
+              <td>${escapeHtml(lead.attendant_name || '-')}</td>
+              <td>${escapeHtml(lead.owner_name || '-')}</td>
               <td><span class="analysis-status ${c.isComplete ? 'ok' : c.completed ? 'warn' : 'empty'}">${c.completed}/${c.total}</span></td>
               <td>${record.questions.length}</td>
               <td>${record.transcript ? 'Sim' : 'Não'}</td>
@@ -6862,7 +6862,7 @@ Você manteve a calma...
             <div class="meeting-info">
               <span>Reunião</span>
               <strong>${brDate(meeting.meeting_date)}${meeting.meeting_time ? ` • ${escapeHtml(meeting.meeting_time)}` : ''}</strong>
-              <span>Segunda: <strong>${meeting.next_meeting_date ? `${brDate(meeting.next_meeting_date)}${meeting.next_meeting_time ? ` • ${escapeHtml(meeting.next_meeting_time)}` : ''}` : '—'}</strong></span>
+              <span>Segunda: <strong>${meeting.next_meeting_date ? `${brDate(meeting.next_meeting_date)}${meeting.next_meeting_time ? ` • ${escapeHtml(meeting.next_meeting_time)}` : ''}` : '-'}</strong></span>
             </div>
             <div class="meeting-note">${escapeHtml(note)}</div>
             <div class="meeting-actions">
@@ -6884,11 +6884,11 @@ Você manteve a calma...
             const lead = db.leads.find(l => l.id === meeting.lead_id);
             return `<tr>
               <td>${brDate(meeting.meeting_date)}${meeting.meeting_time ? `<br><small style="color:var(--muted);">${escapeHtml(meeting.meeting_time)}</small>` : ''}</td>
-              <td><strong>${escapeHtml(lead?.name || 'Lead removido')}</strong><br><small style="color:var(--muted);">${escapeHtml(lead?.phone || '—')}</small></td>
+              <td><strong>${escapeHtml(lead?.name || 'Lead removido')}</strong><br><small style="color:var(--muted);">${escapeHtml(lead?.phone || '-')}</small></td>
               <td>${campaignBadge(meeting.campaign_id)}</td>
               <td>${meetingStatusBadge(meeting.status)}</td>
-              <td>${escapeHtml(meeting.happened || meeting.notes || '—')}</td>
-              <td>${meeting.next_meeting_date ? `${brDate(meeting.next_meeting_date)}${meeting.next_meeting_time ? ` • ${escapeHtml(meeting.next_meeting_time)}` : ''}` : '—'}</td>
+              <td>${escapeHtml(meeting.happened || meeting.notes || '-')}</td>
+              <td>${meeting.next_meeting_date ? `${brDate(meeting.next_meeting_date)}${meeting.next_meeting_time ? ` • ${escapeHtml(meeting.next_meeting_time)}` : ''}` : '-'}</td>
               <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
                 <button class="btn small secondary" data-meeting-edit="${meeting.id}">Editar</button>
                 <button class="btn small secondary" data-meeting-details="${meeting.lead_id}">Lead</button>
@@ -6954,9 +6954,9 @@ Você manteve a calma...
             <div class="detail-body">
               <div class="detail-grid">
                 <div class="detail-card"><small>Reunião</small><strong>${brDate(meeting.meeting_date)}</strong></div>
-                <div class="detail-card"><small>Horário</small><strong>${escapeHtml(meeting.meeting_time || '—')}</strong></div>
-                <div class="detail-card"><small>Dono/decisor</small><strong>${escapeHtml(lead?.owner_name || '—')}</strong></div>
-                <div class="detail-card"><small>Atendente</small><strong>${escapeHtml(lead?.attendant_name || '—')}</strong></div>
+                <div class="detail-card"><small>Horário</small><strong>${escapeHtml(meeting.meeting_time || '-')}</strong></div>
+                <div class="detail-card"><small>Dono/decisor</small><strong>${escapeHtml(lead?.owner_name || '-')}</strong></div>
+                <div class="detail-card"><small>Atendente</small><strong>${escapeHtml(lead?.attendant_name || '-')}</strong></div>
               </div>
 
               <div class="detail-section">
@@ -7245,7 +7245,7 @@ Você manteve a calma...
         <tbody>
           ${sorted.map(lead => `<tr>
             <td><strong>${escapeHtml(lead.name)}</strong><br><small style="color:var(--muted);">${escapeHtml(lead.category || 'Sem categoria')}</small></td>
-            <td>${escapeHtml(formatPhoneForDisplay(lead.phone) || '—')}<br><small style="color:var(--muted);">WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '—')}</small></td>
+            <td>${escapeHtml(formatPhoneForDisplay(lead.phone) || '-')}<br><small style="color:var(--muted);">WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '-')}</small></td>
             <td>${statusBadge(lead.crm_status)}</td>
             <td>${tempBadge(lead.temperature)}</td>
             <td>${formatFollowupDateTime(lead.next_followup)}</td>
@@ -7307,9 +7307,9 @@ Você manteve a calma...
             const lead = db.leads.find(l => l.id === call.lead_id);
             return `<tr>
               <td>${brDate(call.date)}</td>
-              <td><strong>${escapeHtml(lead?.name || 'Lead removido')}</strong><br><small style="color:var(--muted);">${escapeHtml(lead?.phone || '—')}</small></td>
-              <td>${escapeHtml(call.result || '—')}</td>
-              <td>${escapeHtml(call.comments || call.diagnostic_data?.breve_relato || '—')}</td>
+              <td><strong>${escapeHtml(lead?.name || 'Lead removido')}</strong><br><small style="color:var(--muted);">${escapeHtml(lead?.phone || '-')}</small></td>
+              <td>${escapeHtml(call.result || '-')}</td>
+              <td>${escapeHtml(call.comments || call.diagnostic_data?.breve_relato || '-')}</td>
               <td>${escapeHtml(getUser(call.user_id).name)}</td>
             </tr>`;
           }).join('')}
@@ -7512,7 +7512,7 @@ Você manteve a calma...
       const s = campaignStats(c.id);
       const color = c.color || '#2563EB';
       const description = c.description || 'Sem descrição cadastrada.';
-      const lastActivityText = s.lastActivity ? brDateTime(s.lastActivity) : '—';
+      const lastActivityText = s.lastActivity ? brDateTime(s.lastActivity) : '-';
       const searchText = `${c.name || ''} ${c.description || ''} ${c.active === false ? 'inativa desativada' : 'ativa'}`.toLowerCase();
       const isActive = c.active !== false;
       return `<article class="campaign-card-pro ${isActive ? '' : 'is-inactive'}" style="--campaign-color:${escapeAttr(isActive ? color : '#64748B')}" data-campaign-card-search="${escapeAttr(searchText)}">
@@ -7750,7 +7750,7 @@ Você manteve a calma...
                     <tr>
                       <td><input class="lead-check move-lead-check" type="checkbox" value="${lead.id}"></td>
                       <td><strong>${escapeHtml(lead.name)}</strong><br><small style="color:var(--muted)">${escapeHtml(lead.category || 'Sem categoria')}</small></td>
-                      <td>${escapeHtml(formatPhoneForDisplay(lead.phone) || '—')}<br><small style="color:var(--muted)">WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '—')}</small></td>
+                      <td>${escapeHtml(formatPhoneForDisplay(lead.phone) || '-')}<br><small style="color:var(--muted)">WA: ${escapeHtml(formatPhoneForDisplay(lead.whatsapp) || '-')}</small></td>
                       <td>${statusBadge(lead.crm_status)}</td>
                       <td>${tempBadge(lead.temperature)}</td>
                       <td>${brDateTime(lead.imported_at || lead.created_at)}</td>
@@ -7857,7 +7857,7 @@ Você manteve a calma...
                   <div class="field"><label>Cor</label><input id="campaignColorInput" name="color" class="input" type="color" value="${escapeAttr(campaign?.color || '#2563EB')}"></div>
                   <div class="modal-note">Escolha uma cor para identificar rapidamente essa campanha nos cards, badges e filtros.</div>
                 </div>
-                ${isEdit ? `<div class="modal-note"><strong>Status atual:</strong> ${isCurrentlyActive ? 'Ativa' : 'Desativada'} — ações de ativar, desativar ou excluir ficam na área de segurança abaixo.</div>` : `<div class="modal-note"><strong>Status:</strong> toda nova campanha começa ativa.</div>`}
+                ${isEdit ? `<div class="modal-note"><strong>Status atual:</strong> ${isCurrentlyActive ? 'Ativa' : 'Desativada'} - ações de ativar, desativar ou excluir ficam na área de segurança abaixo.</div>` : `<div class="modal-note"><strong>Status:</strong> toda nova campanha começa ativa.</div>`}
               </div>
             </div>
 
@@ -8003,7 +8003,7 @@ Você manteve a calma...
     }
 
     function scoreLabel(score) {
-      if (score === null || score === undefined) return '—';
+      if (score === null || score === undefined) return '-';
       return `${Number(score).toFixed(1)}/10`;
     }
 
@@ -8132,9 +8132,9 @@ Você manteve a calma...
           </div>
 
           <div class="follow-alert-grid">
-            <div class="follow-alert-card"><div class="follow-alert-top"><small>Nota média geral</small><span class="follow-icon">📈</span></div><strong>${overall === null ? '—' : scoreLabel(overall)}</strong><span>Média dos tipos avaliados.</span></div>
+            <div class="follow-alert-card"><div class="follow-alert-top"><small>Nota média geral</small><span class="follow-icon">📈</span></div><strong>${overall === null ? '-' : scoreLabel(overall)}</strong><span>Média dos tipos avaliados.</span></div>
             <div class="follow-alert-card purple"><div class="follow-alert-top"><small>Ligações analisadas</small><span class="follow-icon">☎️</span></div><strong>${analyzedCalls}</strong><span>Registros com análise salva.</span></div>
-            <div class="follow-alert-card warning"><div class="follow-alert-top"><small>Principal melhoria</small><span class="follow-icon">🎯</span></div><strong style="font-size:22px;">${weakest ? escapeHtml(weakest.type.short) : '—'}</strong><span>${weakest ? scoreLabel(weakest.avg) : 'Sem dados ainda.'}</span></div>
+            <div class="follow-alert-card warning"><div class="follow-alert-top"><small>Principal melhoria</small><span class="follow-icon">🎯</span></div><strong style="font-size:22px;">${weakest ? escapeHtml(weakest.type.short) : '-'}</strong><span>${weakest ? scoreLabel(weakest.avg) : 'Sem dados ainda.'}</span></div>
             <div class="follow-alert-card danger"><div class="follow-alert-top"><small>Pontos abaixo de 7</small><span class="follow-icon">⚠️</span></div><strong>${lowCount}</strong><span>Prioridades de treinamento.</span></div>
           </div>
 
@@ -8183,7 +8183,7 @@ Você manteve a calma...
           return `<div class="analysis-score-row">
             <div class="analysis-label"><strong>${escapeHtml(item.type.label)}</strong><small>${item.count} nota${item.count === 1 ? '' : 's'}</small></div>
             <div class="score-track"><div class="score-fill" style="width:${Math.max(2, avg * 10)}%;background:${scoreColor(avg)}"></div></div>
-            <span class="score-badge">${item.avg === null ? '—' : scoreLabel(avg)}</span>
+            <span class="score-badge">${item.avg === null ? '-' : scoreLabel(avg)}</span>
             <span class="bar-value">${item.count}</span>
           </div>`;
         }).join('')}
@@ -8255,8 +8255,8 @@ Você manteve a calma...
               <td>${escapeHtml(getUser(record.user_id).name)}</td>
               <td>${campaignBadge(record.campaign_id)}</td>
               <td>${escapeHtml(record.label)}</td>
-              <td><span class="score-badge" style="color:${scoreColor(record.score || 0)}">${record.score === null ? escapeHtml(record.rawScore || '—') : scoreLabel(record.score)}</span></td>
-              <td><span class="analysis-table-note">${escapeHtml(record.text || '—')}</span></td>
+              <td><span class="score-badge" style="color:${scoreColor(record.score || 0)}">${record.score === null ? escapeHtml(record.rawScore || '-') : scoreLabel(record.score)}</span></td>
+              <td><span class="analysis-table-note">${escapeHtml(record.text || '-')}</span></td>
             </tr>`;
           }).join('')}
         </tbody>
@@ -8874,7 +8874,7 @@ Você manteve a calma...
                   <div class="goal-weekdays-head">
                     <div><strong>Dias da semana válidos</strong><span>Escolha em quais dias essa meta deve cobrar resultado. Exemplo: meta diária só de segunda a sexta.</span></div>
                     <div class="goal-weekdays-actions">
-                      <button type="button" class="btn small secondary" data-weekdays-preset="business">Seg–Sex</button>
+                      <button type="button" class="btn small secondary" data-weekdays-preset="business">Seg-Sex</button>
                       <button type="button" class="btn small secondary" data-weekdays-preset="all">Todos</button>
                       <button type="button" class="btn small secondary" data-weekdays-preset="weekend">Fim de semana</button>
                     </div>
@@ -9094,7 +9094,7 @@ Você manteve a calma...
 
     function renderUserTable() {
       return `<table><thead><tr><th>Nome</th><th>Email</th><th>Role</th><th>Campanhas permitidas</th><th>Ações</th></tr></thead><tbody>
-        ${db.users.map(u => `<tr><td><strong>${escapeHtml(u.name)}</strong></td><td>${escapeHtml(u.email)}</td><td>${statusBadge(u.role)}</td><td>${(u.campaigns_allowed || []).map(id => campaignBadge(id)).join(' ') || '—'}</td><td><div style="display:flex;gap:6px;"><button class="btn small secondary" data-edit-user="${u.id}">Editar</button><button class="btn small danger" data-delete-user="${u.id}">Excluir</button></div></td></tr>`).join('')}
+        ${db.users.map(u => `<tr><td><strong>${escapeHtml(u.name)}</strong></td><td>${escapeHtml(u.email)}</td><td>${statusBadge(u.role)}</td><td>${(u.campaigns_allowed || []).map(id => campaignBadge(id)).join(' ') || '-'}</td><td><div style="display:flex;gap:6px;"><button class="btn small secondary" data-edit-user="${u.id}">Editar</button><button class="btn small danger" data-delete-user="${u.id}">Excluir</button></div></td></tr>`).join('')}
       </tbody></table>`;
     }
 
@@ -9954,7 +9954,7 @@ Você manteve a calma...
 
     function parseDateLike(value) {
       const text = String(value || '').trim();
-      if (!text || text === '—') return null;
+      if (!text || text === '-') return null;
 
       // dd/mm/yyyy ou dd/mm/yyyy hh:mm
       const br = text.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:,\s*|\s+)?(?:(\d{2}):(\d{2}))?/);
@@ -10418,7 +10418,7 @@ function closeModal() {
 
     function formatBytes(bytes = 0) {
       const value = Number(bytes);
-      if (!Number.isFinite(value)) return '—';
+      if (!Number.isFinite(value)) return '-';
       if (value <= 0) return '0';
       const mb = value / (1024 * 1024);
       if (mb < 0.01) return `${Math.max(1, Math.round(value / 1024))} KB`;
@@ -10427,13 +10427,13 @@ function closeModal() {
 
     function formatNumber(value) {
       const n = Number(value);
-      if (!Number.isFinite(n)) return '—';
+      if (!Number.isFinite(n)) return '-';
       return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(n);
     }
 
     function formatPercent(value) {
       const n = Number(value);
-      if (!Number.isFinite(n)) return '—';
+      if (!Number.isFinite(n)) return '-';
       return `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }).format(n)}%`;
     }
 
@@ -10713,7 +10713,7 @@ function settingsV5Hero(title, subtitle) {
     }
 
     function settingsV5Metric(label, value, description = '', extraClass = '') {
-      const safeValue = value === undefined || value === null || value === '' ? '—' : value;
+      const safeValue = value === undefined || value === null || value === '' ? '-' : value;
       return `<div class="settings-v5-metric-card ${extraClass}"><small>${escapeHtml(label)}</small><strong>${escapeHtml(safeValue)}</strong>${description ? `<span>${escapeHtml(description)}</span>` : ''}</div>`;
     }
 
@@ -10986,19 +10986,19 @@ function settingsV5Hero(title, subtitle) {
 
     function formatNumber(value) {
       const n = Number(value);
-      if (!Number.isFinite(n)) return '—';
+      if (!Number.isFinite(n)) return '-';
       return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(n);
     }
 
     function formatPercent(value) {
       const n = Number(value);
-      if (!Number.isFinite(n)) return '—';
+      if (!Number.isFinite(n)) return '-';
       return `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0, minimumFractionDigits: 0, maximumFractionDigits: 1 }).format(n)}%`;
     }
 
     function formatBytes(bytes = 0) {
       const value = Number(bytes || 0);
-      if (!Number.isFinite(value)) return '—';
+      if (!Number.isFinite(value)) return '-';
       if (value <= 0) return '0';
       const mb = value / (1024 * 1024);
       if (mb < 0.01) return `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }).format(value / 1024)} KB`;
@@ -11164,7 +11164,7 @@ function settingsV5Hero(title, subtitle) {
       if (!visible.length) {
         return '<div class="empty-state"><strong>Nenhum conflito registrado</strong><span>Quando a importação encontrar duplicidade, divergência de campo ou linha incompleta, o relatório aparecerá aqui.</span></div>';
       }
-      return `<div class="table-wrap"><table class="sortable-table"><thead><tr><th>Data</th><th>Tipo</th><th>Lead / linha</th><th>Campo</th><th>Valor atual</th><th>Valor importado</th><th>Decisão</th><th>Motivo</th></tr></thead><tbody>${visible.map(c => `<tr><td>${escapeHtml(brDateTime(c.created_at || c.date || ''))}</td><td>${escapeHtml(c.record_type || 'Registro')}</td><td>${escapeHtml(c.record_name || c.record_id || '—')}</td><td>${escapeHtml(c.field || '—')}</td><td>${escapeHtml(c.currentValue || c.current_value || '—')}</td><td>${escapeHtml(c.incomingValue || c.incoming_value || '—')}</td><td>${escapeHtml(conflictDecisionLabel(c.decision))}</td><td>${escapeHtml(c.reason || '—')}</td></tr>`).join('')}</tbody></table></div>${conflicts.length > visible.length ? `<div class="settings-v5-note">Mostrando ${visible.length} de ${conflicts.length} conflito(s). Baixe o CSV para ver tudo.</div>` : ''}`;
+      return `<div class="table-wrap"><table class="sortable-table"><thead><tr><th>Data</th><th>Tipo</th><th>Lead / linha</th><th>Campo</th><th>Valor atual</th><th>Valor importado</th><th>Decisão</th><th>Motivo</th></tr></thead><tbody>${visible.map(c => `<tr><td>${escapeHtml(brDateTime(c.created_at || c.date || ''))}</td><td>${escapeHtml(c.record_type || 'Registro')}</td><td>${escapeHtml(c.record_name || c.record_id || '-')}</td><td>${escapeHtml(c.field || '-')}</td><td>${escapeHtml(c.currentValue || c.current_value || '-')}</td><td>${escapeHtml(c.incomingValue || c.incoming_value || '-')}</td><td>${escapeHtml(conflictDecisionLabel(c.decision))}</td><td>${escapeHtml(c.reason || '-')}</td></tr>`).join('')}</tbody></table></div>${conflicts.length > visible.length ? `<div class="settings-v5-note">Mostrando ${visible.length} de ${conflicts.length} conflito(s). Baixe o CSV para ver tudo.</div>` : ''}`;
     }
 
     function exportImportConflictReportCSV(batchId = '') {
@@ -11472,13 +11472,13 @@ function settingsV5Hero(title, subtitle) {
       if (general && !hasDayHours) {
         const normalized = general.replace(/\s+/g, ' ').trim();
         const map = [
-          ['hours_monday', /(?:seg(?:unda)?(?:-feira)?|mon(?:day)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
-          ['hours_tuesday', /(?:ter(?:ça|ca)?(?:-feira)?|tue(?:sday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
-          ['hours_wednesday', /(?:qua(?:rta)?(?:-feira)?|wed(?:nesday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
-          ['hours_thursday', /(?:qui(?:nta)?(?:-feira)?|thu(?:rsday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
-          ['hours_friday', /(?:sex(?:ta)?(?:-feira)?|fri(?:day)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
-          ['hours_saturday', /(?:s[aá]b(?:ado)?|sat(?:urday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
-          ['hours_sunday', /(?:dom(?:ingo)?|sun(?:day)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[-–aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i]
+          ['hours_monday', /(?:seg(?:unda)?(?:-feira)?|mon(?:day)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
+          ['hours_tuesday', /(?:ter(?:ça|ca)?(?:-feira)?|tue(?:sday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
+          ['hours_wednesday', /(?:qua(?:rta)?(?:-feira)?|wed(?:nesday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
+          ['hours_thursday', /(?:qui(?:nta)?(?:-feira)?|thu(?:rsday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
+          ['hours_friday', /(?:sex(?:ta)?(?:-feira)?|fri(?:day)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
+          ['hours_saturday', /(?:s[aá]b(?:ado)?|sat(?:urday)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i],
+          ['hours_sunday', /(?:dom(?:ingo)?|sun(?:day)?)[^0-9a-z]*(fechado|closed|\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?\s*[--aà]\s*\d{1,2}[:h]?\d{0,2}\s*(?:am|pm)?)/i]
         ];
         let matched = false;
         map.forEach(([key, regex]) => {
@@ -11977,7 +11977,7 @@ function settingsV5Hero(title, subtitle) {
         <div class="modal-header"><div class="modal-title-wrap"><div class="modal-icon green">✅</div><div><h2>${escapeHtml(title)}</h2><p>Relatório salvo no histórico. Snapshot criado antes das alterações.</p></div></div><button type="button" class="btn ghost modal-close" data-close>✕</button></div>
         <div class="modal-body" data-modal-scroll>
           <div class="settings-v5-metric-grid">
-            ${[['Leads novos', s.leadsAdded || batch?.added?.leads?.length || 0], ['Leads atualizados', s.leadsUpdated || batch?.updated?.leads?.length || 0], ['Duplicados evitados', s.duplicates || 0], ['Conflitos / alertas', conflicts.length || batch?.conflicts_count || batch?.conflicts?.length || 0], ['Sem telefone', s.noPhoneCount || 0], ['Ignorados', s.ignored || 0], ['Campanhas novas', s.campaignsAdded || batch?.added?.campaigns?.length || 0], ['Campanhas restauradas/atualizadas', s.campaignsUpdated || batch?.updated?.campaigns?.length || 0], ['Ligações novas', s.callLogsAdded || batch?.added?.callLogs?.length || 0], ['Follow-ups novos', s.followUpsAdded || batch?.added?.followUps?.length || 0], ['Reuniões novas', s.meetingsAdded || batch?.added?.meetings?.length || 0], ['Snapshot', batch?.snapshot_before ? 'Criado' : '—']].map(([label, value]) => settingsV5Metric ? settingsV5Metric(label, typeof value === 'number' ? formatNumber(value) : value, '') : `<div class="settings-stat"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}
+            ${[['Leads novos', s.leadsAdded || batch?.added?.leads?.length || 0], ['Leads atualizados', s.leadsUpdated || batch?.updated?.leads?.length || 0], ['Duplicados evitados', s.duplicates || 0], ['Conflitos / alertas', conflicts.length || batch?.conflicts_count || batch?.conflicts?.length || 0], ['Sem telefone', s.noPhoneCount || 0], ['Ignorados', s.ignored || 0], ['Campanhas novas', s.campaignsAdded || batch?.added?.campaigns?.length || 0], ['Campanhas restauradas/atualizadas', s.campaignsUpdated || batch?.updated?.campaigns?.length || 0], ['Ligações novas', s.callLogsAdded || batch?.added?.callLogs?.length || 0], ['Follow-ups novos', s.followUpsAdded || batch?.added?.followUps?.length || 0], ['Reuniões novas', s.meetingsAdded || batch?.added?.meetings?.length || 0], ['Snapshot', batch?.snapshot_before ? 'Criado' : '-']].map(([label, value]) => settingsV5Metric ? settingsV5Metric(label, typeof value === 'number' ? formatNumber(value) : value, '') : `<div class="settings-stat"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}
           </div>
           <div class="settings-v5-note">${escapeHtml(s.text || 'Importação concluída com segurança.')}</div>
           ${conflictSection}
@@ -12179,13 +12179,13 @@ function settingsV5Hero(title, subtitle) {
     /* BUYFLOW SETTINGS MODAL STABLE V9 - tabs and buttons fixed */
     function formatSettingsNumber(value) {
       const n = Number(value);
-      if (!Number.isFinite(n)) return '—';
+      if (!Number.isFinite(n)) return '-';
       return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(n);
     }
 
     function formatSettingsMb(bytes) {
       const value = Number(bytes || 0);
-      if (!Number.isFinite(value) || value < 0) return '—';
+      if (!Number.isFinite(value) || value < 0) return '-';
       if (value === 0) return '0';
       const mb = value / (1024 * 1024);
       if (mb < 0.01) return `${Math.max(1, Math.round(value / 1024))} KB`;
@@ -12198,7 +12198,7 @@ function settingsV5Hero(title, subtitle) {
         const bytes = new Blob([raw]).size;
         return { bytes, mb: bytes / (1024 * 1024), label: formatSettingsMb(bytes) };
       } catch (error) {
-        return { bytes: 0, mb: 0, label: '—' };
+        return { bytes: 0, mb: 0, label: '-' };
       }
     }
 
@@ -12261,7 +12261,7 @@ function settingsV5Hero(title, subtitle) {
     }
 
     function settingsV5Metric(label, value, description = '', extraClass = '') {
-      const safeValue = value === undefined || value === null || value === '' ? '—' : value;
+      const safeValue = value === undefined || value === null || value === '' ? '-' : value;
       return `<div class="settings-v5-metric-card ${extraClass}"><small>${escapeHtml(label)}</small><strong>${escapeHtml(safeValue)}</strong>${description ? `<span>${escapeHtml(description)}</span>` : ''}</div>`;
     }
 
@@ -13041,7 +13041,7 @@ function settingsV5Hero(title, subtitle) {
       const text = String(value).trim();
       if (!text) return false;
       const invalid = normalize(text);
-      return !['undefined', 'null', 'nan', '-', '—', '--', 'sem telefone', 'sem valor estimado', 'sem cidade', 'sem informação', 'sem informacao', 'não informado', 'nao informado'].includes(invalid);
+      return !['undefined', 'null', 'nan', '-', '-', '--', 'sem telefone', 'sem valor estimado', 'sem cidade', 'sem informação', 'sem informacao', 'não informado', 'nao informado'].includes(invalid);
     }
 
     function pipelineFirstValue(lead = {}, keys = []) {
@@ -13432,7 +13432,7 @@ function settingsV5Hero(title, subtitle) {
       return state.pipelineExpandedCards;
     }
 
-    function pipelinePlainValue(value, fallback = '—') {
+    function pipelinePlainValue(value, fallback = '-') {
       const display = pipelineDisplayValue(value);
       return pipelineHasRealValue(display) ? display : fallback;
     }
@@ -13508,7 +13508,7 @@ function settingsV5Hero(title, subtitle) {
       const events = allEvents.slice(0, 3);
       const header = `<div class="pipeline-history-head"><span>Últimos movimentos</span>${allEvents.length > 3 ? `<button type="button" class="pipeline-history-all-btn" data-pipeline-history-all="${escapeAttr(lead.id)}">Ver todos</button>` : ''}</div>`;
       if (!events.length) return `${header}<div><b>Histórico:</b> nenhum evento registrado ainda.</div>`;
-      return header + events.map(event => `<div><b>${escapeHtml(typeof brDate === 'function' && event.date ? brDate(String(event.date).slice(0,10)) : pipelinePlainValue(event.date, '—'))}</b> — ${escapeHtml(event.title || 'Evento')}${event.text ? `<br>${escapeHtml(event.text)}` : ''}</div>`).join('');
+      return header + events.map(event => `<div><b>${escapeHtml(typeof brDate === 'function' && event.date ? brDate(String(event.date).slice(0,10)) : pipelinePlainValue(event.date, '-'))}</b> - ${escapeHtml(event.title || 'Evento')}${event.text ? `<br>${escapeHtml(event.text)}` : ''}</div>`).join('');
     }
 
     function openPipelineHistoryModal(leadId) {
@@ -13530,7 +13530,7 @@ function settingsV5Hero(title, subtitle) {
           <div class="pipeline-history-full">
             ${events.length ? events.map(event => `
               <div class="pipeline-history-full-item">
-                <strong>${escapeHtml(typeof brDateTime === 'function' && event.date ? brDateTime(event.date) : (typeof brDate === 'function' && event.date ? brDate(String(event.date).slice(0,10)) : pipelinePlainValue(event.date, '—')))}</strong>
+                <strong>${escapeHtml(typeof brDateTime === 'function' && event.date ? brDateTime(event.date) : (typeof brDate === 'function' && event.date ? brDate(String(event.date).slice(0,10)) : pipelinePlainValue(event.date, '-')))}</strong>
                 <span>${escapeHtml(event.title || 'Evento')}</span>
                 ${event.text ? `<p>${escapeHtml(event.text)}</p>` : ''}
               </div>
@@ -14040,7 +14040,7 @@ function settingsV5Hero(title, subtitle) {
 
 
 /* =========================================================
-   DISCAGEM INTEGRADA — motor da versão aprovada pelo usuário
+   DISCAGEM INTEGRADA - motor da versão aprovada pelo usuário
    ========================================================= */
   var RESULTS = ['Follow-up','Reunião Marcada','Pediu WhatsApp','Falar com decisor','Ligar Novamente','Não existe','Perdido','Convertido'];
   var ACTIVE_RESULTS = new Set(['', 'Não atendeu','Ligar Novamente','Contato feito','Follow-up','Pediu WhatsApp','Falar com decisor']);
@@ -15418,7 +15418,7 @@ Chamam mais pelo WhatsApp, principalmente no horário de almoço."></textarea></
 
 
   function cleanScoreNote(text) {
-    return String(text || '').replace(/^\s*(?:nota\s*)?\d{1,2}\s*(?:\/\s*\d{1,2})?\s*[-:–—]?\s*/i, '').trim();
+    return String(text || '').replace(/^\s*(?:nota\s*)?\d{1,2}\s*(?:\/\s*\d{1,2})?\s*[-:]?\s*/i, '').trim();
   }
 
 
@@ -15457,8 +15457,8 @@ Chamam mais pelo WhatsApp, principalmente no horário de almoço."></textarea></
     raw.split(/\r?\n/).forEach(line => {
       const clean = line.trim();
       if (!clean) return;
-      const qMatch = clean.match(/^(?:pergunta|perg\.?|p)\s*(\d{1,2})?\s*[:\-–—]\s*(.*)$/i);
-      const aMatch = clean.match(/^(?:resposta|resp\.?|r)\s*(\d{1,2})?\s*[:\-–—]\s*(.*)$/i);
+      const qMatch = clean.match(/^(?:pergunta|perg\.?|p)\s*(\d{1,2})?\s*[-:]\s*(.*)$/i);
+      const aMatch = clean.match(/^(?:resposta|resp\.?|r)\s*(\d{1,2})?\s*[-:]\s*(.*)$/i);
       if (qMatch) {
         currentIndex = Number(qMatch[1] || currentIndex + 1 || 1);
         currentSide = 'question';
@@ -15812,7 +15812,7 @@ Chamam mais pelo WhatsApp, principalmente no horário de almoço."></textarea></
 
 
 /* =========================================================
-   INTEGRAÇÃO CRM COMPLETO — wrappers e análise unificada
+   INTEGRAÇÃO CRM COMPLETO - wrappers e análise unificada
    ========================================================= */
 function ensureDialerIntegratedRuntime() {
   state.dialerResultFilter = state.dialerResultFilter || 'all';
@@ -15988,7 +15988,7 @@ function summarizeAnalysis(records) {
 
 
 /* =========================================================
-   Análise V2 — usa Score IA 0-10 + Nota rápida própria
+   Análise V2 - usa Score IA 0-10 + Nota rápida própria
    ========================================================= */
 function averageScoreFromRecords(records, predicate) {
   const values = records.filter(record => predicate(record) && record.score !== null && record.score !== undefined && Number.isFinite(Number(record.score))).map(record => Number(record.score));
@@ -16033,10 +16033,10 @@ function renderAnalysis() {
       </div>
 
       <div class="follow-alert-grid five">
-        <div class="follow-alert-card"><div class="follow-alert-top"><small>Nota média geral</small><span class="follow-icon">📈</span></div><strong>${overall === null ? '—' : scoreLabel(overall)}</strong><span>Média geral considerando análise, IA e nota rápida.</span></div>
-        <div class="follow-alert-card success"><div class="follow-alert-top"><small>Nota rápida média</small><span class="follow-icon">⭐</span></div><strong>${manualAvg === null ? '—' : scoreLabel(manualAvg)}</strong><span>${manualCount} nota${manualCount === 1 ? '' : 's'} própria${manualCount === 1 ? '' : 's'} registrada${manualCount === 1 ? '' : 's'}.</span></div>
-        <div class="follow-alert-card purple"><div class="follow-alert-top"><small>Score IA médio</small><span class="follow-icon">🤖</span></div><strong>${iaAvg === null ? '—' : scoreLabel(iaAvg)}</strong><span>${iaCount} critério${iaCount === 1 ? '' : 's'} de Score de qualidade.</span></div>
-        <div class="follow-alert-card warning"><div class="follow-alert-top"><small>Principal melhoria</small><span class="follow-icon">🎯</span></div><strong style="font-size:22px;">${weakest ? escapeHtml(weakest.type.short) : '—'}</strong><span>${weakest ? scoreLabel(weakest.avg) : 'Sem dados ainda.'}</span></div>
+        <div class="follow-alert-card"><div class="follow-alert-top"><small>Nota média geral</small><span class="follow-icon">📈</span></div><strong>${overall === null ? '-' : scoreLabel(overall)}</strong><span>Média geral considerando análise, IA e nota rápida.</span></div>
+        <div class="follow-alert-card success"><div class="follow-alert-top"><small>Nota rápida média</small><span class="follow-icon">⭐</span></div><strong>${manualAvg === null ? '-' : scoreLabel(manualAvg)}</strong><span>${manualCount} nota${manualCount === 1 ? '' : 's'} própria${manualCount === 1 ? '' : 's'} registrada${manualCount === 1 ? '' : 's'}.</span></div>
+        <div class="follow-alert-card purple"><div class="follow-alert-top"><small>Score IA médio</small><span class="follow-icon">🤖</span></div><strong>${iaAvg === null ? '-' : scoreLabel(iaAvg)}</strong><span>${iaCount} critério${iaCount === 1 ? '' : 's'} de Score de qualidade.</span></div>
+        <div class="follow-alert-card warning"><div class="follow-alert-top"><small>Principal melhoria</small><span class="follow-icon">🎯</span></div><strong style="font-size:22px;">${weakest ? escapeHtml(weakest.type.short) : '-'}</strong><span>${weakest ? scoreLabel(weakest.avg) : 'Sem dados ainda.'}</span></div>
         <div class="follow-alert-card danger"><div class="follow-alert-top"><small>Pontos abaixo de 7</small><span class="follow-icon">⚠️</span></div><strong>${lowCount}</strong><span>Prioridades de treinamento.</span></div>
       </div>
 
@@ -16076,14 +16076,14 @@ function renderAnalysis() {
 
 
 /* =========================================================
-   Análise V3 — central inteligente da Discagem
+   Análise V3 - central inteligente da Discagem
    Usa Nota rápida própria, Score IA 0-10, perguntas/respostas,
    follow-up, resultado e pontos de melhoria salvos na Discagem.
    ========================================================= */
 function bfScoreNumber(value) {
   if (value === null || value === undefined) return null;
   const raw = String(value).trim().toLowerCase();
-  if (!raw || raw === 'neutro' || raw === 'neutral' || raw === 'sem nota' || raw === '—') return null;
+  if (!raw || raw === 'neutro' || raw === 'neutral' || raw === 'sem nota' || raw === '-') return null;
   const frac = raw.match(/(-?\d+(?:[\.,]\d+)?)\s*\/\s*(\d+(?:[\.,]\d+)?)/);
   if (frac) {
     const n = Number(frac[1].replace(',', '.'));
@@ -16102,7 +16102,7 @@ function bfAvg(values) {
 
 function bfScoreText(value) {
   const n = bfScoreNumber(value);
-  return n === null ? '—' : `${(Math.round(n * 10) / 10).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}/10`;
+  return n === null ? '-' : `${(Math.round(n * 10) / 10).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}/10`;
 }
 
 function bfScorePercent(value) {
@@ -16247,7 +16247,7 @@ function renderAnalysisDiagnosisV3(metrics) {
 
 function renderAnalysisCompareV3(manualAvg, iaAvg) {
   const diff = manualAvg === null || iaAvg === null ? null : manualAvg - iaAvg;
-  const diffLabel = diff === null ? '—' : `${diff > 0 ? '+' : ''}${(Math.round(diff * 10) / 10).toLocaleString('pt-BR')}`;
+  const diffLabel = diff === null ? '-' : `${diff > 0 ? '+' : ''}${(Math.round(diff * 10) / 10).toLocaleString('pt-BR')}`;
   return `<div class="analysis-compare-card">
     <div class="analysis-compare-line"><strong>Sua Nota rápida</strong><div class="analysis-mini-track"><div class="analysis-mini-fill" style="width:${bfScorePercent(manualAvg)}%;background:linear-gradient(90deg,#16A34A,#22C55E);"></div></div><span class="score-badge">${bfScoreText(manualAvg)}</span></div>
     <div class="analysis-compare-line"><strong>Score IA</strong><div class="analysis-mini-track"><div class="analysis-mini-fill" style="width:${bfScorePercent(iaAvg)}%;background:linear-gradient(90deg,#2563EB,#7C3AED);"></div></div><span class="score-badge">${bfScoreText(iaAvg)}</span></div>
@@ -16300,7 +16300,7 @@ function renderAnalysisRankingV3(rows) {
   return `<table class="analysis-v3-table sortable-table"><thead><tr><th>Data</th><th>Lead</th><th>Resultado</th><th>Nota rápida</th><th>Score IA</th><th>Diferença</th><th>Média</th><th>Ponto de melhoria</th><th>Ações</th></tr></thead><tbody>${scored.map(row => {
     const diff = row.manual === null || row.iaAvg === null ? null : row.manual - row.iaAvg;
     const weak = row.autoItems.filter(item => item.score !== null).sort((a,b) => a.score - b.score)[0];
-    return `<tr><td>${escapeHtml(bfAnalysisDate(row.date))}</td><td><strong>${escapeHtml(row.lead.name || 'Lead')}</strong><div class="analysis-table-note">${campaignBadge(row.campaign_id)}</div></td><td>${escapeHtml(row.result || '—')}</td><td><span class="score-badge">${bfScoreText(row.manual)}</span></td><td><span class="score-badge">${bfScoreText(row.iaAvg)}</span></td><td><span class="score-badge">${diff === null ? '—' : `${diff > 0 ? '+' : ''}${(Math.round(diff * 10) / 10).toLocaleString('pt-BR')}`}</span></td><td><span class="score-badge" style="color:${scoreColor(row.overall || 0)}">${bfScoreText(row.overall)}</span></td><td><span class="analysis-table-note">${escapeHtml(row.improvementFocus || row.spokeTooMuch || row.missingQuestion || weak?.hint || weak?.label || '—')}</span></td><td><button type="button" class="btn small secondary" data-open-analysis-lead="${escapeAttr(row.lead_id)}">Ver detalhes</button></td></tr>`;
+    return `<tr><td>${escapeHtml(bfAnalysisDate(row.date))}</td><td><strong>${escapeHtml(row.lead.name || 'Lead')}</strong><div class="analysis-table-note">${campaignBadge(row.campaign_id)}</div></td><td>${escapeHtml(row.result || '-')}</td><td><span class="score-badge">${bfScoreText(row.manual)}</span></td><td><span class="score-badge">${bfScoreText(row.iaAvg)}</span></td><td><span class="score-badge">${diff === null ? '-' : `${diff > 0 ? '+' : ''}${(Math.round(diff * 10) / 10).toLocaleString('pt-BR')}`}</span></td><td><span class="score-badge" style="color:${scoreColor(row.overall || 0)}">${bfScoreText(row.overall)}</span></td><td><span class="analysis-table-note">${escapeHtml(row.improvementFocus || row.spokeTooMuch || row.missingQuestion || weak?.hint || weak?.label || '-')}</span></td><td><button type="button" class="btn small secondary" data-open-analysis-lead="${escapeAttr(row.lead_id)}">Ver detalhes</button></td></tr>`;
   }).join('')}</tbody></table>`;
 }
 
@@ -16435,7 +16435,7 @@ function renderAnalysis() {
 
 
 /* =========================================================
-   BUYFLOW — Análise e Metas v4: telas aprimoradas
+   BUYFLOW - Análise e Metas v4: telas aprimoradas
    ========================================================= */
 function proPct(value, max = 100) {
   const n = Number(value || 0);
@@ -16475,7 +16475,7 @@ function renderAnalysisProDiagnosis(metrics) {
 
 function renderAnalysisProCompare(manualAvg, iaAvg) {
   const diff = manualAvg === null || iaAvg === null ? null : manualAvg - iaAvg;
-  const diffText = diff === null ? '—' : `${diff > 0 ? '+' : ''}${(Math.round(diff * 10) / 10).toLocaleString('pt-BR')}`;
+  const diffText = diff === null ? '-' : `${diff > 0 ? '+' : ''}${(Math.round(diff * 10) / 10).toLocaleString('pt-BR')}`;
   const note = diff === null ? 'Salve ligações com Nota rápida e Score IA para comparar sua percepção.' :
     Math.abs(diff) <= 1 ? 'Boa calibragem: sua visão está próxima da avaliação técnica.' :
     diff > 1 ? 'Atenção: você se avaliou acima da IA. Reassista as ligações com diferença maior.' :
@@ -16773,7 +16773,7 @@ function renderGoals() {
 
 
 /* =========================================================
-   BUYFLOW CRM — PASSADA FINAL DE QUALIDADE GLOBAL
+   BUYFLOW CRM - PASSADA FINAL DE QUALIDADE GLOBAL
    Mantém a lógica existente e apenas refina páginas antigas.
    ========================================================= */
 (function buyflowGlobalQualityPass(){
@@ -17209,7 +17209,7 @@ function renderGoals() {
 
 
 /* =========================================================
-   BUYFLOW CRM — FILTROS CUSTOMIZADOS EXATOS
+   BUYFLOW CRM - FILTROS CUSTOMIZADOS EXATOS
    ========================================================= */
 (function buyflowExactSmartFilters(){
   function bfFilterEscapeHtml(value) { return typeof escapeHtml === 'function' ? escapeHtml(value) : String(value ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
@@ -18243,7 +18243,7 @@ function renderGoals() {
         if (!visible.length) {
           return '<div class="empty-state"><strong>Nenhum defeito registrado</strong><span>Quando a importação encontrar erro, duplicidade, campo divergente ou alerta, o relatório detalhado aparecerá aqui.</span></div>';
         }
-        return `<div class="table-wrap"><table class="sortable-table"><thead><tr><th>Data</th><th>Nível</th><th>Defeito encontrado</th><th>Onde corrigir</th><th>Campo/coluna</th><th>Valor atual no CRM</th><th>Valor importado</th><th>Decisão do CRM</th><th>Como corrigir</th></tr></thead><tbody>${visible.map(c => `<tr><td>${escapeHtml(brDateTime(c.created_at || c.date || ''))}</td><td>${bfConflictBadge(c.severity)}</td><td><strong>${escapeHtml(c.category || 'Conflito / alerta')}</strong><br><small>${escapeHtml(c.defect || c.reason || 'Defeito não informado')}</small></td><td>${escapeHtml(c.where_to_fix || c.record_name || c.record_id || '—')}</td><td>${escapeHtml(c.column_name || c.field || '—')}</td><td>${escapeHtml(c.currentValue || c.current_value || '—')}</td><td>${escapeHtml(c.incomingValue || c.incoming_value || '—')}</td><td>${escapeHtml(conflictDecisionLabel(c.decision))}</td><td>${escapeHtml(c.suggested_fix || c.reason || 'Conferir manualmente.')}</td></tr>`).join('')}</tbody></table></div>${hydrated.length > visible.length ? `<div class="settings-v5-note">Mostrando ${visible.length} de ${hydrated.length} defeito(s). Baixe o CSV para ver tudo.</div>` : ''}`;
+        return `<div class="table-wrap"><table class="sortable-table"><thead><tr><th>Data</th><th>Nível</th><th>Defeito encontrado</th><th>Onde corrigir</th><th>Campo/coluna</th><th>Valor atual no CRM</th><th>Valor importado</th><th>Decisão do CRM</th><th>Como corrigir</th></tr></thead><tbody>${visible.map(c => `<tr><td>${escapeHtml(brDateTime(c.created_at || c.date || ''))}</td><td>${bfConflictBadge(c.severity)}</td><td><strong>${escapeHtml(c.category || 'Conflito / alerta')}</strong><br><small>${escapeHtml(c.defect || c.reason || 'Defeito não informado')}</small></td><td>${escapeHtml(c.where_to_fix || c.record_name || c.record_id || '-')}</td><td>${escapeHtml(c.column_name || c.field || '-')}</td><td>${escapeHtml(c.currentValue || c.current_value || '-')}</td><td>${escapeHtml(c.incomingValue || c.incoming_value || '-')}</td><td>${escapeHtml(conflictDecisionLabel(c.decision))}</td><td>${escapeHtml(c.suggested_fix || c.reason || 'Conferir manualmente.')}</td></tr>`).join('')}</tbody></table></div>${hydrated.length > visible.length ? `<div class="settings-v5-note">Mostrando ${visible.length} de ${hydrated.length} defeito(s). Baixe o CSV para ver tudo.</div>` : ''}`;
       };
 
       exportImportConflictReportCSV = function exportImportDefectReportCSV(batchId = '') {
@@ -18384,7 +18384,7 @@ function renderGoals() {
             <div class="modal-header"><div class="modal-title-wrap"><div class="modal-icon green">✅</div><div><h2>${escapeHtml(title)}</h2><p>Relatório salvo no histórico. Snapshot criado antes das alterações.</p></div></div><button type="button" class="btn ghost modal-close" data-close>✕</button></div>
             <div class="modal-body" data-modal-scroll>
               <div class="settings-v5-metric-grid">
-                ${[['Leads novos', s.leadsAdded || batch?.added?.leads?.length || 0], ['Leads atualizados', s.leadsUpdated || batch?.updated?.leads?.length || 0], ['Duplicados evitados', s.duplicates || 0], ['Conflitos / alertas', conflicts.length || batch?.conflicts_count || batch?.conflicts?.length || 0], ['Sem telefone', s.noPhoneCount || conflicts.filter(c => String(c.category || '').toLowerCase().includes('telefone')).length || 0], ['Ignorados', s.ignored || 0], ['Campanhas novas', s.campaignsAdded || batch?.added?.campaigns?.length || 0], ['Campanhas restauradas/atualizadas', s.campaignsUpdated || batch?.updated?.campaigns?.length || 0], ['Ligações novas', s.callLogsAdded || batch?.added?.callLogs?.length || 0], ['Follow-ups novos', s.followUpsAdded || batch?.added?.followUps?.length || 0], ['Reuniões novas', s.meetingsAdded || batch?.added?.meetings?.length || 0], ['Snapshot', batch?.snapshot_before ? 'Criado' : '—']].map(([label, value]) => settingsV5Metric ? settingsV5Metric(label, typeof value === 'number' ? formatNumber(value) : value, '') : `<div class="settings-stat"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}
+                ${[['Leads novos', s.leadsAdded || batch?.added?.leads?.length || 0], ['Leads atualizados', s.leadsUpdated || batch?.updated?.leads?.length || 0], ['Duplicados evitados', s.duplicates || 0], ['Conflitos / alertas', conflicts.length || batch?.conflicts_count || batch?.conflicts?.length || 0], ['Sem telefone', s.noPhoneCount || conflicts.filter(c => String(c.category || '').toLowerCase().includes('telefone')).length || 0], ['Ignorados', s.ignored || 0], ['Campanhas novas', s.campaignsAdded || batch?.added?.campaigns?.length || 0], ['Campanhas restauradas/atualizadas', s.campaignsUpdated || batch?.updated?.campaigns?.length || 0], ['Ligações novas', s.callLogsAdded || batch?.added?.callLogs?.length || 0], ['Follow-ups novos', s.followUpsAdded || batch?.added?.followUps?.length || 0], ['Reuniões novas', s.meetingsAdded || batch?.added?.meetings?.length || 0], ['Snapshot', batch?.snapshot_before ? 'Criado' : '-']].map(([label, value]) => settingsV5Metric ? settingsV5Metric(label, typeof value === 'number' ? formatNumber(value) : value, '') : `<div class="settings-stat"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}
               </div>
               <div class="settings-v5-note">${escapeHtml(s.text || 'Importação concluída com segurança.')}</div>
               ${conflictSection}
@@ -19050,7 +19050,7 @@ function renderGoals() {
 
 
     /* =========================================================
-       PATCH BUYFLOW — CENTRAL DE FOLLOW-UP VISÍVEL E SINCRONIZADA
+       PATCH BUYFLOW - CENTRAL DE FOLLOW-UP VISÍVEL E SINCRONIZADA
        Corrige casos em que o lead possui next_followup, mas a Central
        não mostra porque db.followUps não foi materializado ou perdeu vínculo.
        ========================================================= */
@@ -19658,7 +19658,7 @@ function renderGoals() {
     })();
 
     /* =========================================================
-       PATCH BUYFLOW — RESTAURAÇÃO REAL DE BACKUP / NÃO ZERAR IMPORTAÇÃO
+       PATCH BUYFLOW - RESTAURAÇÃO REAL DE BACKUP / NÃO ZERAR IMPORTAÇÃO
        Corrige o caso em que a tela dizia "Restauração concluída" com tudo 0.
        Agora o CRM valida o conteúdo antes, mescla de verdade e bloqueia sucesso falso.
        ========================================================= */
@@ -20552,7 +20552,7 @@ function renderGoals() {
             <section class="data-hub-section primary">
               <div class="data-hub-section-head"><div><h4>1. Importar ou restaurar</h4><p>Use um único botão para JSON ou CSV. Antes de gravar, o CRM mostra uma prévia.</p></div><span class="badge badge-neutral">Última importação: ${hubEscape(lastImport)}</span></div>
               <div class="data-hub-body two-cols">
-                <div class="field"><label>Como restaurar</label><select id="unifiedRestoreMode" class="select"><option value="merge">Mesclar com dados atuais — recomendado</option><option value="replace">Substituir base antes de restaurar</option></select></div>
+                <div class="field"><label>Como restaurar</label><select id="unifiedRestoreMode" class="select"><option value="merge">Mesclar com dados atuais - recomendado</option><option value="replace">Substituir base antes de restaurar</option></select></div>
                 <div class="field"><label>Arquivo</label><button id="unifiedRestoreBtn" type="button" class="btn">Restaurar JSON/CSV</button></div>
               </div>
               <div class="settings-v5-note"><strong>Regra:</strong> se o arquivo não tiver dados, o CRM bloqueia e não mostra sucesso falso. CSV comum abre como importação de leads.</div>
@@ -20579,7 +20579,7 @@ function renderGoals() {
             </section>
 
             <details class="data-hub-section danger-zone">
-              <summary><span>3. Zona de risco — apagar dados</span><small>Fica escondido para evitar clique errado.</small></summary>
+              <summary><span>3. Zona de risco - apagar dados</span><small>Fica escondido para evitar clique errado.</small></summary>
               <div class="data-hub-body two-cols danger-body">
                 <div class="field"><label>O que apagar</label><select id="dangerClearType" class="select"><option value="commercial">Base comercial: leads, campanhas, ligações, follow-ups, reuniões e metas</option><option value="audio">Somente áudios salvos</option><option value="history">Somente histórico técnico/importações</option><option value="all">Tudo do CRM neste navegador</option></select></div>
                 <div class="field"><label>Confirmação</label><input id="dangerConfirmText" class="input" placeholder="Digite APAGAR"></div>
