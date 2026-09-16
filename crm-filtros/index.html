@@ -15,10 +15,7 @@
       <div class="brand-row">
         <div class="brand">
           <div class="brand-mark">C</div>
-          <div>
-            <h1>CRM Contatos</h1>
-            <p>Prospecção simples e organizada</p>
-          </div>
+          <div><h1>CRM Contatos</h1><p>Prospecção simples e organizada</p></div>
         </div>
         <div class="top-actions">
           <button class="btn ghost" id="exportBtn" type="button">Exportar</button>
@@ -31,9 +28,7 @@
           <span>⌕</span>
           <input id="searchInput" type="search" placeholder="Buscar em todos os campos..." autocomplete="off" />
         </label>
-        <button class="btn filter-btn" id="openFiltersBtn" type="button">
-          Filtros <span id="filterCountBadge" class="count-badge hidden">0</span>
-        </button>
+        <button class="btn filter-btn" id="openFiltersBtn" type="button">Filtros <span id="filterCountBadge" class="count-badge hidden">0</span></button>
       </div>
 
       <div class="stats" id="statsBar">
@@ -43,7 +38,6 @@
         <button class="stat" data-quick-filter="return"><span>Retornar</span><strong id="statReturn">0</strong></button>
         <button class="stat" data-quick-filter="interested"><span>Interessados</span><strong id="statInterested">0</strong></button>
       </div>
-
       <div id="activeFilters" class="active-filters hidden"></div>
     </header>
 
@@ -55,7 +49,42 @@
         </div>
         <div class="toolbar-actions">
           <button class="icon-btn" id="sortBtn" title="Alternar nome A-Z / Z-A">A→Z</button>
+          <button class="icon-btn quick-filter-trigger" id="quickFilterBtn" type="button" aria-expanded="false" title="Filtro rápido">
+            <span class="quick-filter-icon">⌄</span><span class="quick-filter-label">Filtro</span><span id="quickFilterBadge" class="quick-mini-badge hidden">0</span>
+          </button>
           <button class="icon-btn" id="refreshBtn" title="Atualizar">↻</button>
+
+          <div id="quickFilterPopover" class="quick-filter-popover hidden">
+            <div class="quick-filter-head"><strong>Filtro rápido</strong><span>Mais usados</span></div>
+            <div class="quick-filter-grid">
+              <label class="quick-wide">Ordenar
+                <select id="quickSort">
+                  <option value="az">Nome A → Z</option><option value="za">Nome Z → A</option>
+                  <option value="state">Estado / UF</option><option value="ddd">DDD</option>
+                  <option value="country">País</option><option value="activity">Profissão</option>
+                  <option value="category">Categoria</option><option value="contacted">Não contatados primeiro</option>
+                  <option value="next">Próximo retorno</option>
+                </select>
+              </label>
+              <label>País<select id="quickCountry"><option value="">Todos</option></select></label>
+              <label>Estado<select id="quickState"><option value="">Todos</option></select></label>
+              <label>DDD<select id="quickDdd"><option value="">Todos</option></select></label>
+              <label>Contatado<select id="quickContacted"><option value="">Todos</option><option value="no">Não</option><option value="yes">Sim</option></select></label>
+              <label class="quick-wide">Status
+                <select id="quickProspectStatus">
+                  <option value="">Todos</option><option>Não contatado</option><option>Tentativa</option><option>Falou comigo</option><option>Retornar</option><option>Interessado</option><option>Sem interesse</option><option>Cliente</option>
+                </select>
+              </label>
+              <label>Profissão<select id="quickActivity"><option value="">Todas</option></select></label>
+              <label>Categoria<select id="quickCategory"><option value="">Todas</option></select></label>
+            </div>
+            <div class="quick-filter-actions">
+              <button class="btn ghost" id="quickClearBtn" type="button">Limpar</button>
+              <button class="btn primary" id="quickApplyBtn" type="button">Aplicar</button>
+              <button class="btn quick-more" id="quickMoreBtn" type="button">Mais filtros</button>
+            </div>
+            <div class="quick-filter-note">Os filtros completos continuam disponíveis no botão “Filtros” acima.</div>
+          </div>
         </div>
       </section>
 
@@ -64,33 +93,17 @@
         <div class="bulk-actions">
           <button class="btn small" id="bulkContactedBtn">Marcar contatados</button>
           <select id="bulkStatusSelect" class="compact-select">
-            <option value="">Alterar status...</option>
-            <option>Não contatado</option>
-            <option>Tentativa</option>
-            <option>Falou comigo</option>
-            <option>Retornar</option>
-            <option>Interessado</option>
-            <option>Sem interesse</option>
-            <option>Cliente</option>
+            <option value="">Alterar status...</option><option>Não contatado</option><option>Tentativa</option><option>Falou comigo</option><option>Retornar</option><option>Interessado</option><option>Sem interesse</option><option>Cliente</option>
           </select>
           <button class="btn small danger" id="bulkDeleteBtn">Excluir</button>
         </div>
       </section>
 
       <section id="emptyState" class="empty-state hidden">
-        <div class="empty-icon">◎</div>
-        <h2>Nenhum contato encontrado</h2>
-        <p id="emptyMessage">Importe sua planilha ou ajuste os filtros.</p>
-        <button class="btn primary" id="emptyImportBtn">Importar contatos</button>
+        <div class="empty-icon">◎</div><h2>Nenhum contato encontrado</h2><p id="emptyMessage">Importe sua planilha ou ajuste os filtros.</p><button class="btn primary" id="emptyImportBtn">Importar contatos</button>
       </section>
-
       <section id="contactsList" class="contacts-list" aria-live="polite"></section>
-
-      <nav id="pagination" class="pagination hidden" aria-label="Paginação">
-        <button class="btn ghost" id="prevPageBtn">Anterior</button>
-        <span id="pageInfo">Página 1</span>
-        <button class="btn ghost" id="nextPageBtn">Próxima</button>
-      </nav>
+      <nav id="pagination" class="pagination hidden" aria-label="Paginação"><button class="btn ghost" id="prevPageBtn">Anterior</button><span id="pageInfo">Página 1</span><button class="btn ghost" id="nextPageBtn">Próxima</button></nav>
     </main>
   </div>
 
@@ -99,29 +112,14 @@
   <aside id="filtersPanel" class="sheet filters-sheet" aria-hidden="true">
     <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <div>
-        <h2>Filtros completos</h2>
-        <p>Todos os campos da planilha + status do CRM</p>
-      </div>
+      <div><h2>Filtros completos</h2><p>Todos os campos da planilha + status do CRM</p></div>
       <button class="icon-btn" data-close-sheet="filtersPanel">×</button>
     </div>
 
     <section class="filter-section">
-      <div class="filter-section-title">
-        <strong>Filtros da planilha</strong>
-        <span>Combine quantos quiser</span>
-      </div>
+      <div class="filter-section-title"><strong>Filtros da planilha</strong><span>Combine quantos quiser</span></div>
       <div class="filter-grid">
-        <label>Nome
-          <div class="filter-input-pair">
-            <select id="filterNameMode">
-              <option value="contains">contém</option>
-              <option value="starts">começa com</option>
-              <option value="equals">é igual a</option>
-            </select>
-            <input id="filterName" type="text" placeholder="Ex.: João">
-          </div>
-        </label>
+        <label>Nome<div class="filter-input-pair"><select id="filterNameMode"><option value="contains">contém</option><option value="starts">começa com</option><option value="equals">é igual a</option></select><input id="filterName" type="text" placeholder="Ex.: João"></div></label>
         <label>Telefone original<input id="filterPhoneOriginal" type="text" inputmode="tel" placeholder="Contém..."></label>
         <label>Telefone normalizado<input id="filterPhone" type="text" inputmode="tel" placeholder="Contém..."></label>
         <label>Já contatei?<select id="filterContacted"><option value="">Todos</option><option value="no">Não</option><option value="yes">Sim</option></select></label>
@@ -151,31 +149,17 @@
       </div>
     </section>
 
-    <div class="sheet-footer">
-      <button class="btn ghost grow" id="clearFiltersBtn">Limpar tudo</button>
-      <button class="btn primary grow" id="applyFiltersBtn">Aplicar filtros</button>
-    </div>
+    <div class="sheet-footer"><button class="btn ghost grow" id="clearFiltersBtn">Limpar tudo</button><button class="btn primary grow" id="applyFiltersBtn">Aplicar filtros</button></div>
   </aside>
 
   <aside id="detailsPanel" class="sheet details-sheet" aria-hidden="true">
-    <div class="sheet-handle"></div>
-    <div class="sheet-head">
-      <div><h2>Contato</h2><p id="detailSubtitle">Editar e registrar andamento</p></div>
-      <button class="icon-btn" data-close-sheet="detailsPanel">×</button>
-    </div>
-    <div id="detailsContent" class="details-content"></div>
+    <div class="sheet-handle"></div><div class="sheet-head"><div><h2>Contato</h2><p id="detailSubtitle">Editar e registrar andamento</p></div><button class="icon-btn" data-close-sheet="detailsPanel">×</button></div><div id="detailsContent" class="details-content"></div>
   </aside>
 
   <div id="importModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="importTitle">
     <div class="modal-card">
-      <div class="modal-head">
-        <div><h2 id="importTitle">Importar contatos</h2><p>Excel (.xlsx/.xls) ou CSV</p></div>
-        <button class="icon-btn" id="closeImportBtn">×</button>
-      </div>
-      <div id="importDropzone" class="dropzone">
-        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden />
-        <div class="drop-icon">⇧</div><strong>Escolher arquivo</strong><span>ou arraste para cá</span><small>Seus contatos ficam somente no navegador deste dispositivo.</small>
-      </div>
+      <div class="modal-head"><div><h2 id="importTitle">Importar contatos</h2><p>Excel (.xlsx/.xls) ou CSV</p></div><button class="icon-btn" id="closeImportBtn">×</button></div>
+      <div id="importDropzone" class="dropzone"><input id="fileInput" type="file" accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden /><div class="drop-icon">⇧</div><strong>Escolher arquivo</strong><span>ou arraste para cá</span><small>Seus contatos ficam somente no navegador deste dispositivo.</small></div>
       <div id="importPreview" class="import-preview hidden"></div>
     </div>
   </div>
@@ -185,5 +169,6 @@
   <script src="./app-v2-core.js"></script>
   <script src="./app-v2-ui.js"></script>
   <script src="./app-v2-actions.js"></script>
+  <script src="./quick-filter.js"></script>
 </body>
 </html>
