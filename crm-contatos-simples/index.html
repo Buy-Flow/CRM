@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1324" />
+  <title>CRM Contatos</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-row">
+        <div class="brand">
+          <div class="brand-mark">C</div>
+          <div>
+            <h1>CRM Contatos</h1>
+            <p>Prospecção simples e organizada</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="btn ghost" id="exportBtn" type="button">Exportar</button>
+          <button class="btn primary" id="importBtn" type="button">Importar</button>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Buscar nome, telefone, profissão, organização..." autocomplete="off" />
+        </label>
+        <button class="btn filter-btn" id="openFiltersBtn" type="button">
+          Filtros <span id="filterCountBadge" class="count-badge hidden">0</span>
+        </button>
+      </div>
+
+      <div class="stats" id="statsBar">
+        <button class="stat" data-quick-filter="all"><span>Total</span><strong id="statTotal">0</strong></button>
+        <button class="stat" data-quick-filter="pending"><span>Pendentes</span><strong id="statPending">0</strong></button>
+        <button class="stat" data-quick-filter="contacted"><span>Contatados</span><strong id="statContacted">0</strong></button>
+        <button class="stat" data-quick-filter="return"><span>Retornar</span><strong id="statReturn">0</strong></button>
+        <button class="stat" data-quick-filter="interested"><span>Interessados</span><strong id="statInterested">0</strong></button>
+      </div>
+
+      <div id="activeFilters" class="active-filters hidden"></div>
+    </header>
+
+    <main class="content">
+      <section class="list-toolbar">
+        <div>
+          <strong id="resultCount">0 contatos</strong>
+          <span id="storageStatus" class="muted">Salvo neste dispositivo</span>
+        </div>
+        <div class="toolbar-actions">
+          <button class="icon-btn" id="sortBtn" title="Ordenação atual">A→Z</button>
+          <button class="icon-btn" id="refreshBtn" title="Atualizar">↻</button>
+        </div>
+      </section>
+
+      <section id="bulkBar" class="bulk-bar hidden">
+        <strong><span id="bulkCount">0</span> selecionados</strong>
+        <div class="bulk-actions">
+          <button class="btn small" id="bulkContactedBtn">Marcar contatados</button>
+          <select id="bulkStatusSelect" class="compact-select">
+            <option value="">Alterar status...</option>
+            <option>Não contatado</option>
+            <option>Tentativa</option>
+            <option>Falou comigo</option>
+            <option>Retornar</option>
+            <option>Interessado</option>
+            <option>Sem interesse</option>
+            <option>Cliente</option>
+          </select>
+          <button class="btn small danger" id="bulkDeleteBtn">Excluir</button>
+        </div>
+      </section>
+
+      <section id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">◎</div>
+        <h2>Nenhum contato encontrado</h2>
+        <p id="emptyMessage">Importe sua planilha ou ajuste os filtros.</p>
+        <button class="btn primary" id="emptyImportBtn">Importar contatos</button>
+      </section>
+
+      <section id="contactsList" class="contacts-list" aria-live="polite"></section>
+
+      <nav id="pagination" class="pagination hidden" aria-label="Paginação">
+        <button class="btn ghost" id="prevPageBtn">Anterior</button>
+        <span id="pageInfo">Página 1</span>
+        <button class="btn ghost" id="nextPageBtn">Próxima</button>
+      </nav>
+    </main>
+  </div>
+
+  <div id="sheetBackdrop" class="backdrop hidden"></div>
+
+  <aside id="filtersPanel" class="sheet filters-sheet" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div>
+        <h2>Filtros</h2>
+        <p>Combine quantos filtros quiser</p>
+      </div>
+      <button class="icon-btn" data-close-sheet="filtersPanel">×</button>
+    </div>
+
+    <div class="filter-grid">
+      <label>País
+        <select id="filterCountry">
+          <option value="">Todos</option>
+          <option>Brasil</option>
+          <option>Estados Unidos</option>
+          <option>Indeterminado</option>
+        </select>
+      </label>
+      <label>Estado / UF
+        <select id="filterState"><option value="">Todos</option></select>
+      </label>
+      <label>DDD
+        <select id="filterDdd"><option value="">Todos</option></select>
+      </label>
+      <label>Já contatei?
+        <select id="filterContacted">
+          <option value="">Todos</option>
+          <option value="no">Não</option>
+          <option value="yes">Sim</option>
+        </select>
+      </label>
+      <label>Status de prospecção
+        <select id="filterProspectStatus">
+          <option value="">Todos</option>
+          <option>Não contatado</option>
+          <option>Tentativa</option>
+          <option>Falou comigo</option>
+          <option>Retornar</option>
+          <option>Interessado</option>
+          <option>Sem interesse</option>
+          <option>Cliente</option>
+        </select>
+      </label>
+      <label>Status do número
+        <select id="filterNumberStatus">
+          <option value="">Todos</option>
+          <option>Válido provável</option>
+          <option>Revisar</option>
+          <option>Inválido óbvio</option>
+        </select>
+      </label>
+      <label>Referência familiar
+        <select id="filterFamily"><option value="">Todas</option></select>
+      </label>
+      <label>Atividade / profissão
+        <select id="filterActivity"><option value="">Todas</option></select>
+      </label>
+      <label>Categoria
+        <select id="filterCategory"><option value="">Todas</option></select>
+      </label>
+      <label>Confiança
+        <select id="filterConfidence">
+          <option value="">Todas</option>
+          <option>Alta</option>
+          <option>Média</option>
+          <option>Baixa</option>
+        </select>
+      </label>
+      <label>Duplicado
+        <select id="filterDuplicate">
+          <option value="">Todos</option>
+          <option value="yes">Sim</option>
+          <option value="no">Não</option>
+        </select>
+      </label>
+      <label>Ordenar
+        <select id="filterSort">
+          <option value="az">Nome A → Z</option>
+          <option value="za">Nome Z → A</option>
+          <option value="newest">Mais recentes primeiro</option>
+          <option value="oldest">Mais antigos primeiro</option>
+          <option value="next">Próximo retorno primeiro</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="sheet-footer">
+      <button class="btn ghost grow" id="clearFiltersBtn">Limpar</button>
+      <button class="btn primary grow" id="applyFiltersBtn">Aplicar filtros</button>
+    </div>
+  </aside>
+
+  <aside id="detailsPanel" class="sheet details-sheet" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div>
+        <h2>Contato</h2>
+        <p id="detailSubtitle">Editar e registrar andamento</p>
+      </div>
+      <button class="icon-btn" data-close-sheet="detailsPanel">×</button>
+    </div>
+    <div id="detailsContent" class="details-content"></div>
+  </aside>
+
+  <div id="importModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h2 id="importTitle">Importar contatos</h2>
+          <p>Excel (.xlsx/.xls) ou CSV</p>
+        </div>
+        <button class="icon-btn" id="closeImportBtn">×</button>
+      </div>
+      <div id="importDropzone" class="dropzone">
+        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden />
+        <div class="drop-icon">⇧</div>
+        <strong>Escolher arquivo</strong>
+        <span>ou arraste para cá</span>
+        <small>Seus contatos não são enviados para o GitHub.</small>
+      </div>
+      <div id="importPreview" class="import-preview hidden"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
